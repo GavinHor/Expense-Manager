@@ -17,3 +17,11 @@ p{
     padding: 10px;
     margin: 10px;
 }
+button {
+    background-color: rgb(115, 0, 209);
+    color: rgb(255, 255, 255);
+    font-size: 1em;
+    border-style: none;
+    border-radius: 10%;
+    padding: 1em;
+}

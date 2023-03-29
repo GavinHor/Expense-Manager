@@ -1,0 +1,25 @@
+body {
+    /* overriding style!.css */
+    background-color: rgb(255, 255, 255);
+}
+
+form {
+    align-content: center;
+}
+
+.bubble {
+    background-color: rgb(255, 255, 255);
+    border-width: 1px;
+    border-radius: 5%;
+}
+
+.left {
+    color: rgb(115, 0, 209);
+    float: left;
+}
+
+#card {
+    background-color: rgb(115, 0, 209);
+    border-radius: 1%;
+    padding: 5em;
+}
