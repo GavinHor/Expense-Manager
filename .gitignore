@@ -1,0 +1,15 @@
+
+expense-manager/pages/index.tsx
+expense-manager/public/favicon.ico
+expense-manager/public/next.svg
+expense-manager/public/thirteen.svg
+expense-manager/public/vercel.svg
+expense-manager/README.md
+expense-manager/styles/globals.css
+expense-manager/styles/Home.module.css
+expense-manager/tsconfig.json
+expense-manager/.eslintrc.json
+expense-manager/next.config.js
+expense-manager/pages/_app.tsx
+expense-manager/pages/_document.tsx
+expense-manager/pages/api/hello.ts
