@@ -1,0 +1,45 @@
+:root {
+    --main-color: #fff;
+    --main-bg-color: #561DE2;
+    --secondary-bg-color: #fff;
+    --secondary-header-color: #561DE2;
+    --secondary-color: #111;
+}
+
+body,h1,h2,h3,h4,h5,h6,ul,li,button {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-style: none;
+}
+
+body {
+    background-color: #fff;
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+}
+
+.card-element, .btn-element {
+    border-radius: 50px;
+}
+
+.card-element {
+    padding: 2em;
+}
+
+.btn-element {
+    height: 76px;
+    border-style: none;
+}
+
+h1 {
+    color: var(--secondary-header-color);
+    font-size: 2.5em;
+} 
+
+h2 {
+    font-size: 1.75em;
+}
+
+h3 {
+    font-size: 1.5em;
+} 
