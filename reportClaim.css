@@ -7,7 +7,6 @@ header {
 
 header nav {
     width: 85%;
-    height: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -18,23 +17,35 @@ header nav li {
     align-items: center;
     justify-content: space-between;
     color: var(--main-color);
+    font-size: 1.2em;
     font-weight: bold;
+}
+
+header nav li span {
+    margin-left: 1em;
 }
 
 header nav li button {
-    margin: 0 1em;
-    height: 50px;
-    width: 50px;
+    height: 2.5em;
+    width: 2.5em;
     color: var(--secondary-header-color);
     font-size: 1.5em;
-    font-family: 'Inter', Arial, Helvetica, sans-serif;
     font-weight: bold;
     background-color: #eee;
     border-radius: 100%;
+    border-style: none;
 }
 
 header nav li img {
-    height: 120px;
+    margin-top: -1em;
+    height: 6em;
+}
+
+@media (max-width: 1250px) {
+    header nav li img {
+        margin-top: -1em;
+        height: 4em;
+    }
 }
 
 #card-wrapper {
@@ -46,24 +57,27 @@ header nav li img {
 }
 
 #top-card {
-    width: 80%;
+    width: 85%;
     display: flex;
     justify-content: space-between;
     background-color: var(--main-bg-color);
 }
 
-#btm-card {
-    height: 43vh;
-    width: 80%;
-    margin-top: 2em;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    background-color: var(--main-bg-color);
+@media (max-width: 1250px) {
+    #top-card {
+        flex-direction: column;
+    }
 }
 
 .top-card-info {
     width: 49%;
+}
+
+@media (max-width: 1250px) {
+    .top-card-info {
+        width: 100%;
+        margin-bottom: 1.5em;
+    }
 }
 
 .top-card-info h2 {
@@ -71,7 +85,7 @@ header nav li img {
 }
 
 .card-details {
-    height: 55%;
+    height: 80%;
     margin-top: 1em;
     display: flex;
     flex-direction: column;
@@ -101,13 +115,45 @@ header nav li img {
 }
 
 #buttons button {
+    height: 4.75em;
     width: 40%;
     color: var(--secondary-header-color);
     background-color: var(--secondary-bg-color);
 }
 
-#btm-card-info {
-    height: 60%;
+
+@media (max-width: 1250px) {
+    #buttons{
+        justify-content: space-between;
+    }
+}
+
+
+@media (max-width: 1250px) {
+    #buttons button{
+        width: 48%;
+    }
+}
+
+@media (max-width: 1250px) {
+    #buttons button h2{
+        font-size: 1.2em;
+    }
+}
+
+#btm-card {
+    height: 60vh;
+    width: 85%;
+    margin-top: 2em;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: var(--main-bg-color);
+}
+
+#btm-card-info {  
+    height: 100%;  
+    margin: 1.5em 0 0 0;
     padding: 30px;
     color: var(--secondary-color);
     font-size: 1.2em;
@@ -115,8 +161,7 @@ header nav li img {
     background-color: var(--secondary-bg-color);
 }
 
-#btm-card-info span {
-    display: block;
+#btm-card-info h3 {
     font-weight: bold;
     color: var(--secondary-header-color);
 }
