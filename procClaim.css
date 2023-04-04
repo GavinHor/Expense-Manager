@@ -1,112 +1,97 @@
 *{
     font-family: 'Inter';
+    font-weight: 600; 
 }
-
+/*font-size: 45px; is suitable for most phones, subjected to change or using calc function*/
 body {
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
+    width: 70%;
+    margin:0 auto;
 }
 
-img {
-    height: 450px;
-    width: auto;
-    align-self: center;
+h1 {
+    color: white;
 }
 
-nav{
-    margin: 2%;
-    padding: 2%;
+.description {
+    color: #561DE2;
 }
+
+table, .proof{
+    background-color: white;
+    border-radius: 2em;
+    padding: 1em;
+}
+
 
 /* UPPER SECTION -----------------------------------------------------------------------------------------*/
 .upperSec{
     display: flex;
     flex-wrap: wrap;
-    position: absolute;
-    justify-content: space-around;
-    background-color:  #561DE2;
-    border: none;
-    border-radius: 0px 0px 60px 60px;
-    height: auto;
-    width: auto;
-    left: 10%;
-    right: 10%;
-    top: 0px;
-    padding-bottom: 2%;
-}
-
-.upperSec table{
-    background-color: white;
-    border-radius: 40px;
-    width: auto;
-    height: auto;
-    margin: 3%;
-    padding: 3%;
-}
-
-.upperSec h1{
-    color:  white;
-    font-size: 20px;
-    margin-left: 10%;
-    width: fit-content;
-}
-
-.upperSec table tr{
-    margin-left: 10%;
-}
-
-.upperSec table td{
-    font-size: 20px;
-    width: fit-content;
-    color: black;
-    text-align: end;
-    padding-left: 10px;
-}
-
-.upperSec table .title{
-    color: #561DE2;
-    text-align: start;
+    flex-direction: row;
+    justify-content: space-evenly;
+    background-color: #561DE2;
+    border-radius: 0em 0em 3em 3em;
+    padding: 1em;
+    padding-top: 0em;
+    padding-bottom: 0em;
 }
 
 /* LEFT -----------------------------------------------------------------------------------------*/
-.upper .left{
+.left{
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
-    left: 20%;
+    flex-grow: 2;
+    padding: 1em;
+}
+
+table
+{
+    width: 100%;
+}
+
+tr{
+    display: flex;
+    justify-content: space-between;
+    padding: 0.3em;
+}
+
+td, p {
+    font-size: 2em;
 }
 
 /* RIGHT -----------------------------------------------------------------------------------------*/
-.upper .right{
+/* (change to flex container due to issues with image only filling 1 cell as opposed to multiple) */
+
+.right{
+    padding: 1em;
+}
+
+.proof{
+    text-align: center;
+}
+
+img {
+    width: 25em;
+}
+
+.proofDescription {
     display: flex;
     flex-wrap: wrap;
-    flex-direction: column;
-    justify-content: right;
-    margin: 20%;
-    padding: 30px;
+    flex-direction: row;
+    justify-content: space-between;
 }
-
-.right .proof {
-    background-color: white;
-    border-radius: 50px;
-}
-
-.right .proof tr{
-    text-align: left;
-    align-content: center;
-    margin-right: 10%;
-}
-
 
 /* BOTTOM SECTION -----------------------------------------------------------------------------------------*/
+
 .bottomSec {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-evenly;
     align-content: center;
-    margin-top: 52%;
-    padding: 2%;
 }
 
 .bottomSec button {
@@ -114,12 +99,15 @@ nav{
     border-radius: 60px;
     background-color: #561DE2;
     color: white;
-    height: 80px;
-    width: 22%;
-    top: auto;
-    font-weight: 600;
-    font-size: 30px;
+    height: 3em;
+    width: 15em;
+    font-size: 2em;
+    margin: 0.5em;
+}
 
+
+button {
+    transition: all 0.3s;
 }
 
 /* All buttons hover animation */
