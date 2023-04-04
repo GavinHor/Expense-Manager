@@ -1,5 +1,4 @@
-
-.header{
+.header {
     width: 80%;
     display: flex;
     flex-direction: row;
@@ -9,23 +8,23 @@
     margin-left: auto;
     margin-right: auto;
     margin-top: -0.5em;
-    border-radius: 1em 0em 1em 1em;
+    border-radius: 0em 0em 1em 1em;
     font-weight: bold;
-    font-family:'Inter';
+    font-family: 'Inter';
     font-size: 2em;
 }
 
-.header div{
+.header div {
     flex-grow: 2;
 }
 
-.header h4{
+.header h4 {
     color: white;
     margin: 0em 0em 0em 0em;
     padding: 1em 0em 0.5em 1em;
 }
 
-.header table{
+.header table {
     display: flex;
     flex-wrap: wrap;
     border-collapse: collapse;
@@ -41,7 +40,7 @@ table tr {
     width: 100%;
 }
 
-tr td{
+tr td {
     padding: 0.5em;
 }
 
@@ -85,4 +84,8 @@ tr td{
     font-family: 'Inter';
     font-weight: bold;
     font-size: 2em;
+}
+
+tbody {
+    width: 100%;
 }
