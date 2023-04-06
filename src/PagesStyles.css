@@ -290,6 +290,14 @@ button:hover {
   text-align: center;
 }
 
+/* MakeClaim ------------------------------------------------------------------------------------*/
+
+.MakeClaim{
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+}
+
 /* Employee List --------------------------------------------------------------------------------*/
 .Emps{
   width: 100vw;
