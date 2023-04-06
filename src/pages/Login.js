@@ -2,35 +2,62 @@ import '../pagesStyles/PagesStyles.css';
 import Spline from '@splinetool/react-spline';
 import logo from '../images/FDM_icon_noBg.png'
 
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
 
 
 function Login(){
-    var user="a.belfiore@FDM.uk"
-    var pw="ciao12345"
+    // User Data from Database
+    const userEmail="a.belfiore@FDM.uk";
+    const userPw="ciao";
 
+    const [email, setEmail] = useState('');
+    const [password, setPw] = useState('');
 
     const navigate = useNavigate();
-    function handleClick(event) {
-        navigate('/target-route');
-  }
+
+    const handleSubmit = event => {
+        event.preventDefault(); 
+    
+        if (email!=userEmail || password!=userPw){
+            alert('Wrong Credentials.');
+        }
+        else {
+                navigate('/home');
+        }
+      };
+
 
     return(
     <div className='Login'>
         <div className='left'>
             <div className="title"> EMPLOYEE PORTAL </div>
-            <div className="form">
+            <form className="form" onSubmit={handleSubmit}>
                 <form>
                     <label for="email">email:</label>
-                    <input type="email" id="email" name="email" className="input_mail"/>
+                    <input
+                            className="input_mail"
+                            name="email"
+                            type="text"
+                            placeholder="FDM Email"
+                            onChange={event => setEmail(event.target.value)}
+                            value={email}
+                            />
                 </form>
                 <form id="input_pass">
                     <label for="password">password:</label>
-                    <input type="password" id="password" name="password" className="input_pass"/>
+                    <input
+                            className="input_pass"
+                            name="password"
+                            type="text"
+                            placeholder="Password"
+                            onChange={event => setPw(event.target.value)}
+                            value={password}
+                            />
                 </form>
-                <Link to="/home"> <button onClick={handleClick}>Login</button> </Link>
-            </div>
+                <button type='submit' onClick={handleSubmit}>Login</button>
+            </form>
         </div>
         <div className="right_side">
             <img src={logo} alt='logo'/>
