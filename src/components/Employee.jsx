@@ -1,4 +1,4 @@
-const Employee=({name, email})=>{
+export default function Employee({name, email}){
     return(
         <div className="Employee">
             <p>{name}</p>
@@ -6,5 +6,3 @@ const Employee=({name, email})=>{
         </div>
     )
 }
-
-export default Employee;

@@ -1,15 +1,22 @@
+import { useNavigate, Link } from 'react-router-dom';
+
 import '../App.css';
 
 const ClaimBtn=(props)=>{
+    const navigate = useNavigate();
+    function handleClick(event) {
+        navigate('/target-route');
+    }
+
     return(
             <div className='claimBtn'> 
-                <button onClick={alert}> 
-                    <p>{props.name}</p>
-                    <p>{props.id}</p>
-                    <p>{props.amount}</p>
-                    <p>{props.date}</p>
-                    <p>{props.exp}</p>
-                </button>
+                <Link to={props.click}> <button onClick={handleClick}> 
+                    <p>{props.one}</p>
+                    <p>{props.two}</p>
+                    <p>{props.three}</p>
+                    <p>{props.four}</p>
+                    <p>{props.five}</p>
+                </button> </Link>
             </div>
     )
 }

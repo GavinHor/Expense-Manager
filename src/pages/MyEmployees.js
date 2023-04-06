@@ -1,5 +1,6 @@
 import { useState , useEffect} from 'react';
-import '../App.css';
+import '../pagesStyles/PagesStyles.css';
+import { Link, useNavigate } from 'react-router-dom';
 
 import SideBar from '../components/SideBar';
 import Nav from '../components/Nav';
@@ -9,6 +10,11 @@ function MyEmp(){
     const name="Asia Belfiore"
     const initials="AB"
     const email="a.belfiore@FDM.uk"
+
+    const navigate = useNavigate();
+    function handleClick(event) {
+      navigate('/target-route');
+    }
 
     const [sidebarOpen, setSideBarOpen] = useState(false);
     const handleViewSidebar = () => {
@@ -33,32 +39,32 @@ function MyEmp(){
                 <div class="list">
                     <table>
                     <tr>
-                        <td><ClaimBtn name={name} id="AB 0123" amount="£ 51.99" date="01/01/ 2023" exp="91%"/></td>
-                        <td><button className='button'> VIEW CLAIMS</button></td>
+                        <td><ClaimBtn click="/ProcessClaim" one={name} two="AB 0123" three="Consultant " four="91%"/></td>
+                        <td><Link to="/claims"><button className='button'> VIEW CLAIMS</button></Link></td>
                     </tr>
                     <tr>
-                        <td><ClaimBtn name={name} id="AB 0123" amount="£ 51.99" date="01/01/ 2023" exp="91%"/></td>
-                        <td><button className='button'> VIEW CLAIMS</button></td>
+                        <td><ClaimBtn click="/ProcessClaim" one={name} two="AB 0123" three="Consultant " four="91%"/></td>
+                        <td><Link to="/claims"><button className='button'> VIEW CLAIMS</button></Link></td>
                     </tr>
                     <tr>
-                        <td><ClaimBtn name={name} id="AB 0123" amount="£ 51.99" date="01/01/ 2023" exp="91%"/></td>
-                        <td><button className='button'> VIEW CLAIMS</button></td>
+                        <td><ClaimBtn click="/ProcessClaim" one={name} two="AB 0123" three="Consultant " four="91%"/></td>
+                        <td><Link to="/claims"><button className='button'> VIEW CLAIMS</button></Link></td>
                     </tr>
                     <tr>
-                        <td><ClaimBtn name={name} id="AB 0123" amount="£ 51.99" date="01/01/ 2023" exp="91%"/></td>
-                        <td><button className='button'> VIEW CLAIMS</button></td>
+                        <td><ClaimBtn click="/ProcessClaim" one={name} two="AB 0123" three="Consultant " four="91%"/></td>
+                        <td><Link to="/claims"><button className='button'> VIEW CLAIMS</button></Link></td>
                     </tr>
                     <tr>
-                        <td><ClaimBtn name={name} id="AB 0123" amount="£ 51.99" date="01/01/ 2023" exp="91%"/></td>
-                        <td><button className='button'> VIEW CLAIMS</button></td>
+                        <td><ClaimBtn click="/ProcessClaim" one={name} two="AB 0123" three="Consultant " four="91%"/></td>
+                        <td><Link to="/claims"><button className='button'> VIEW CLAIMS</button></Link></td>
                     </tr>
                     <tr>
-                        <td><ClaimBtn name={name} id="AB 0123" amount="£ 51.99" date="01/01/ 2023" exp="91%"/></td>
-                        <td><button className='button'> VIEW CLAIMS</button></td>
+                        <td><ClaimBtn click="/ProcessClaim" one={name} two="AB 0123" three="Consultant " four="91%"/></td>
+                        <td><Link to="/claims"><button className='button'> VIEW CLAIMS</button></Link></td>
                     </tr>
                     <tr>
-                        <td><ClaimBtn name={name} id="AB 0123" amount="£ 51.99" date="01/01/ 2023" exp="91%"/></td>
-                        <td><button className='button'> VIEW CLAIMS</button></td>
+                        <td><ClaimBtn click="/ProcessClaim" one={name} two="AB 0123" three="Consultant " four="91%"/></td>
+                        <td><Link to="/claims"><button className='button'> VIEW CLAIMS</button></Link></td>
                     </tr>
                     </table>
                 </div>

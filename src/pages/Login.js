@@ -1,13 +1,25 @@
-import '../PagesStyles.css';
+import '../pagesStyles/PagesStyles.css';
 import Spline from '@splinetool/react-spline';
 import logo from '../images/FDM_icon_noBg.png'
 
+import { useNavigate, Link } from 'react-router-dom';
+
+
 
 function Login(){
+    var user="a.belfiore@FDM.uk"
+    var pw="ciao12345"
+
+
+    const navigate = useNavigate();
+    function handleClick(event) {
+        navigate('/target-route');
+  }
+
     return(
     <div className='Login'>
         <div className='left'>
-            <div className="title"> Login Employee Portal </div>
+            <div className="title"> EMPLOYEE PORTAL </div>
             <div className="form">
                 <form>
                     <label for="email">email:</label>
@@ -17,7 +29,7 @@ function Login(){
                     <label for="password">password:</label>
                     <input type="password" id="password" name="password" className="input_pass"/>
                 </form>
-                <button onClick={alert}>Login</button>
+                <Link to="/home"> <button onClick={handleClick}>Login</button> </Link>
             </div>
         </div>
         <div className="right_side">

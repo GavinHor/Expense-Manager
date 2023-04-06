@@ -1,13 +1,13 @@
 import React from 'react';
 import { useState} from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate , Link } from 'react-router-dom';
 
-import '../PagesStyles.css';
+import '../pagesStyles/PagesStyles.css';
 
 import SideBar from '../components/SideBar';
 import Nav from '../components/Nav';
 import ClaimBtn from '../components/ClaimBtn';
-import { Link } from 'react-router-dom';
+
 
 function HomePage() {
   const name="Asia Belfiore"
@@ -43,20 +43,19 @@ function HomePage() {
               </table>
             <div class="claims">
                 <table>
-                  <tr><td><ClaimBtn name={name} id="AB 0123" amount="£ 51.99" date="01/01/ 2023"/></td></tr>
-                  <tr><td><ClaimBtn name={name} id="AB 0123" amount="£ 51.99" date="01/01/ 2023"/></td></tr>
-                  <tr><td><ClaimBtn name={name} id="AB 0123" amount="£ 51.99" date="01/01/ 2023"/></td></tr>
-                  <tr><td><ClaimBtn name={name} id="AB 0123" amount="£ 51.99" date="01/01/ 2023"/></td></tr>
-                  <tr><td><ClaimBtn name={name} id="AB 0123" amount="£ 51.99" date="01/01/ 2023"/></td></tr>
-                  <tr><td><ClaimBtn name={name} id="AB 0123" amount="£ 51.99" date="01/01/ 2023"/></td></tr>
-                  <tr><td><ClaimBtn name={name} id="AB 0123" amount="£ 51.99" date="01/01/ 2023"/></td></tr>
+                  <tr><td><ClaimBtn click="/ProcessClaim" one={name} two="AB 0123" three="£ 51.99" four="01/01/ 2023"/></td></tr>
+                  <tr><td><ClaimBtn click="/ProcessClaim" one={name} two="AB 0123" three="£ 51.99" four="01/01/ 2023"/></td></tr>
+                  <tr><td><ClaimBtn click="/ProcessClaim" one={name} two="AB 0123" three="£ 51.99" four="01/01/ 2023"/></td></tr>
+                  <tr><td><ClaimBtn click="/ProcessClaim" one={name} two="AB 0123" three="£ 51.99" four="01/01/ 2023"/></td></tr>
+                  <tr><td><ClaimBtn click="/ProcessClaim" one={name} two="AB 0123" three="£ 51.99" four="01/01/ 2023"/></td></tr>
+                  <tr><td><ClaimBtn click="/ProcessClaim" one={name} two="AB 0123" three="£ 51.99" four="01/01/ 2023"/></td></tr>
                 </table>
             </div>
           </div>
           <nav class="actions">
             <Link to="/claims"> <button onClick={handleClick}>Claim Expense</button> </Link>
             <Link to="/claims"> <button onClick={handleClick}> Personal Claims </button> </Link>
-            <Link to="/claims"> <button onClick={handleClick}> My Employees </button> </Link>
+            <Link to="/myEmployees"> <button onClick={handleClick}> My Employees </button> </Link>
           </nav>
       </div>
     </div>

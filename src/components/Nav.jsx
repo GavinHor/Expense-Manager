@@ -1,4 +1,4 @@
-import '../BarsStyle.css';
+import '../pagesStyles/BarsStyle.css';
 import logo from '../images/FDM_icon_noBg.png'
 
 import Employee from '../components/Employee';

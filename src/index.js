@@ -4,19 +4,12 @@ import { BrowserRouter } from 'react-router-dom';
 import reportWebVitals from './reportWebVitals';
 import './index.css';
 
-import HomePage from './pages/HomePage';
-import Login from './pages/Login';
 import App from './App';
-import Claims from './pages/Claims';
-import MyEmp from './pages/MyEmployees';
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    {/* <Login /> */}
-    {/* <HomePage /> */}
-    {/* <Claims /> */}
-    {/* <MyEmp /> */}
     <BrowserRouter>
       <App />
     </BrowserRouter>

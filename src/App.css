@@ -25,12 +25,13 @@ button:hover {
 
   background-color: white;
   color: black;
-  min-width: 95%;
+  width: 95%;
   padding: 1%;
   margin: 2%;
   font-weight: bold;
   font-size: 15px;
 }
+
 .claimBtn p{
   padding-left: 2%;
   padding-right: 2%;
@@ -58,4 +59,31 @@ button:hover {
   margin-top: 5px;
 }
 
+/* ProcessCLaim -----------------------------------------------------*/
+
+.ProcessClaim{
+  /* overriding style!.css */
+  background-color: rgb(255, 255, 255);
+}
+
+.ProcessClaim form {
+  align-content: center;
+}
+
+.ProcessClaim .bubble {
+  background-color: rgb(255, 255, 255);
+  border-width: 1px;
+  border-radius: 5%;
+}
+
+.ProcessClaim .left {
+  color: rgb(115, 0, 209);
+  float: left;
+}
+
+.ProcessClaim #card {
+  background-color: rgb(115, 0, 209);
+  border-radius: 1%;
+  padding: 5em;
+}
 

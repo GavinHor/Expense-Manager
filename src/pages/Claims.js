@@ -33,13 +33,12 @@ function Claims(){
                 </table>
                 <div class="list">
                     <table>
-                    <tr><td><ClaimBtn name={claimName} id="TC1001" amount="£ 51.99" date="01/01/ 2023" exp="01/01/ 2023"/></td></tr>
-                    <tr><td><ClaimBtn name={claimName} id="TC1001" amount="£ 51.99" date="01/01/ 2023" exp="01/01/ 2023"/></td></tr>
-                    <tr><td><ClaimBtn name={claimName} id="TC1001" amount="£ 51.99" date="01/01/ 2023" exp="01/01/ 2023"/></td></tr>
-                    <tr><td><ClaimBtn name={claimName} id="TC1001" amount="£ 51.99" date="01/01/ 2023" exp="01/01/ 2023"/></td></tr>
-                    <tr><td><ClaimBtn name={claimName} id="TC1001" amount="£ 51.99" date="01/01/ 2023" exp="01/01/ 2023"/></td></tr>
-                    <tr><td><ClaimBtn name={claimName} id="TC1001" amount="£ 51.99" date="01/01/ 2023" exp="01/01/ 2023"/></td></tr>
-                    <tr><td><ClaimBtn name={claimName} id="TC1001" amount="£ 51.99" date="01/01/ 2023" exp="01/01/ 2023"/></td></tr>
+                        <tr><td><ClaimBtn click="/expenseClaimInfo" one={name} two="AB 0123" three="£ 51.99" four="01/01/ 2023"/></td></tr>
+                        <tr><td><ClaimBtn click="/expenseClaimInfo" one={name} two="AB 0123" three="£ 51.99" four="01/01/ 2023"/></td></tr>
+                        <tr><td><ClaimBtn click="/expenseClaimInfo" one={name} two="AB 0123" three="£ 51.99" four="01/01/ 2023"/></td></tr>
+                        <tr><td><ClaimBtn click="/expenseClaimInfo" one={name} two="AB 0123" three="£ 51.99" four="01/01/ 2023"/></td></tr>
+                        <tr><td><ClaimBtn click="/expenseClaimInfo" one={name} two="AB 0123" three="£ 51.99" four="01/01/ 2023"/></td></tr>
+                        <tr><td><ClaimBtn click="/expenseClaimInfo" one={name} two="AB 0123" three="£ 51.99" four="01/01/ 2023"/></td></tr>
                     </table>
                 </div>
             </div>

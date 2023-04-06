@@ -2,7 +2,7 @@ import React from 'react';
 import { useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import '../PagesStyles.css';
+import '../pagesStyles/PagesStyles.css';
 
 import SideBar from '../components/SideBar';
 import Nav from '../components/Nav';
