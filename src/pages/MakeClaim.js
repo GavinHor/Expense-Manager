@@ -13,7 +13,24 @@ function MakeClaim(){
 
     const [sidebarOpen, setSideBarOpen] = useState(false);
     const handleViewSidebar = () => {
-    setSideBarOpen(!sidebarOpen);};
+    setSideBarOpen(!sidebarOpen);}
+
+    // for proof image
+    const [proofImage, setProofImage] = useState(null);
+
+    const handleSubmit = event => {
+        event.preventDefault();
+    }
+
+    const navigate = useNavigate();
+    function handleClick(event) {
+      navigate('/target-route');
+    }
+
+    function handleImage(event) {
+
+    }
+
     return (
         <div className='MakeClaim'>
             <span>
@@ -36,12 +53,14 @@ function MakeClaim(){
                             <tr>
                                 <td><label>Currency:</label></td>
                                 <td>
-                                <select name='currency'></select>
-                                <optgroup>
-                                    <option>£</option>
-                                    <option>$</option>
-                                    <option>€</option>
-                                </optgroup>
+                                <select name='currency'>
+                                    <optgroup defaultValue={"GBP - £"}>
+                                        <option>GBP - £</option>
+                                        <option>USD - $</option>
+                                        <option>EUR - €</option>
+                                        <option>Other</option>
+                                    </optgroup>
+                                </select>
                                 </td>
                             </tr>
                             <tr>
@@ -62,19 +81,32 @@ function MakeClaim(){
                 <div className='right'>
                     <h1>Expense Proof:</h1>
                     <div className='exProof'>
-                    <img></img>
-                        <table>
-                            <tr className='vat'>
-                                <td>VAT:</td>
-                                <td className="description" >£ 10.12</td>
-                            </tr>
-                        </table>
+                    <img src={proofImage} alt='Proof image'></img>
+                        <form method='POST'>
+                            <input
+                                type='file'
+                                name='proofImage'
+                                onChange={(event) => {
+                                    const file = event.target.files[0];
+                                    console.log(file);
+                                    const imageUrl = URL.createObjectURL(file);
+                                    setProofImage(imageUrl);
+                                }}
+                            >
+                            </input>
+                            <table>
+                                <tr className='vat'>
+                                    <td>VAT:</td>
+                                    <td className="description" ><input type='text'></input></td>
+                                </tr>
+                            </table>
+                        </form>
                     </div>
                 </div>
             </div>
             <nav className="nav">
-              <button formAction='' formMethod=''> SUBMIT </button>
-              <button formAction='' formMethod=''> CANCEL </button>
+              <Link><button type='submit' onClick={handleSubmit}> SUBMIT </button></Link>
+              <Link to="/home"><button formAction='' onClick={handleClick}> CANCEL </button></Link>
             </nav>
         </div>
     )
