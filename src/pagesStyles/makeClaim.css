@@ -98,32 +98,18 @@
     align-items: center;
   }
   
-  .MakeClaim .nav button{
+.MakeClaim .nav button{
     border: none;
     border-collapse:collapse ;
     border-radius: 60px;
     background-color: #561DE2;
     min-width: 20vw;
-  
+
     color: white;
     padding: 6%;
-  
+
     font-weight: 600;
     font-size: 20px;
-  }
-
-  .MakeClaim .middle .left .viewAll .button {
-    border: none;
-    background: transparent;
-    color: #561DE2;
-    font-size: 1.2em;
-    font-weight: bold;
-    align-self: center;
-}
-
-.PersonalInfo .middle .left .viewAll:hover {
-    text-decoration: underline;
-    cursor: pointer;
 }
 
 /* Form styling */
@@ -149,4 +135,9 @@
 .MakeClaim .left textarea {
   width: 15.5rem;
   resize: none;
+}
+
+.MakeClaim .error {
+  color: red;
+  font-size: 12px;
 }

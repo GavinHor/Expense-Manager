@@ -18,7 +18,7 @@ const SideBar = (props) => {
       <nav class="sideCont">
       <Link to="/home"> <button style={{width: "190px"}} onClick={handleClick}> Homepage </button> </Link>
       <Link to="/myDetails"> <button style={{width: "190px"}} onClick={handleClick}> My Information </button> </Link>
-      <Link to="/home"> <button style={{width: "190px"}} onClick={handleClick}> Claim Expense </button> </Link>
+      <Link to="/makeClaim"> <button style={{width: "190px"}} onClick={handleClick}> Claim Expense </button> </Link>
       <Link to="/claims"> <button style={{width: "190px"}} onClick={handleClick}> Personal Claims </button> </Link>
       <Link to="/myEmployees"> <button style={{width: "190px"}} onClick={handleClick}> My Employees </button> </Link>
 

@@ -1,5 +1,6 @@
 import { useState , useEffect} from 'react';
 import { useNavigate , Link } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 
 import '../pagesStyles/makeClaim.css';
 
@@ -18,10 +19,13 @@ function MakeClaim(){
     // for proof image
     const [proofImage, setProofImage] = useState(null);
 
-    const handleSubmit = event => {
-        event.preventDefault();
+    // requires react-hook-form for form validation
+    const {register, formState: {errors}, handleSubmit} = useForm();
+    const onSubmit = (data) => {
+        document.getElementById("claimform").submit();
     }
 
+    // cancel button
     const navigate = useNavigate();
     function handleClick(event) {
       navigate('/target-route');
@@ -36,49 +40,55 @@ function MakeClaim(){
             <div className='middle'>
                 <div className='left'>
                     <h1>Claim Form:</h1>
-                    <form>
+                    <form id="claimform" action='/expenseClaimInfo'>
                         <table>
                             <tr>
                                 <td><label>Type:</label></td>
                                 <td>
-                                    <select className='description' name='type'>
-                                        <optgroup defaultValue={"Travel Claim"}>
+                                    <select {...register("type", {required: true})} className='description' defaultValue="Travel Claim">
                                             <option>Travel Claim</option>
                                             <option>Overnight Stay Claim</option>
                                             <option>Meal Claim</option>
                                             <option>Purchase Claim</option>
-                                        </optgroup>
                                     </select>
                                 </td>
                             </tr>
                             <tr>
                                 <td><label>Amount:</label></td>
-                                <td><input className='description' name='amount' type='text'></input></td>
+                                <td>
+                                    <input {...register("amount", {required: true})} id='amount' className='description' type='text'></input>
+                                    {errors.amount?.type === 'required' && (<p className='error'>Amount is required</p>)}    
+                                </td>
+                                
                             </tr>
                             <tr>
                                 <td><label>Expense Date:</label></td>
-                                <td><input className='description' name='date' type='text'></input></td>
+                                <td>
+                                    <input {...register("date", {required: true})} className='description' type='text'></input>
+                                    {errors.date?.type === 'required' && (<p className='error'>Date is required</p>)}
+                                </td>
                             </tr>
                             <tr>
                                 <td><label>Currency:</label></td>
                                 <td>
-                                <select className='description' name='currency'>
-                                    <optgroup defaultValue={"£ - GBP"}>
+                                <select {...register("currency", {required: true})} className='description' defaultValue="£ - GBP">
                                         <option>£ - GBP</option>
                                         <option>$ - USD</option>
                                         <option>€ - EUR</option>
                                         <option>Other</option>
-                                    </optgroup>
                                 </select>
                                 </td>
                             </tr>
                             <tr>
                                 <td><label>Motive:</label></td>
-                                <td><input className='description' name='motive' type='text'></input></td>
+                                <td>
+                                    <input {...register("motive", {required: true})} className='description' type='text'></input>
+                                    {errors.motive?.type === 'required' && (<p className='error'>Motive is required</p>)}
+                                </td>
                             </tr>
                             <tr>
                                 <td><label>Extra Details:</label></td>
-                                <td><textarea className='description' name='extra'></textarea></td>
+                                <td><textarea {...register("extra")} className='description'></textarea></td>
                             </tr>
                         </table>
                     </form>
@@ -87,10 +97,11 @@ function MakeClaim(){
                     <h1>Expense Proof:</h1>
                     <div className='exProof'>
                     <img src={proofImage} alt='Proof image'></img>
-                        <form method='POST'>
+                        <form>
+                            {/* Image uploader element */}
                             <input
+                                {...register("proofImage")}
                                 type='file'
-                                name='proofImage'
                                 onChange={(event) => {
                                     const file = event.target.files[0];
                                     console.log(file);
@@ -102,7 +113,7 @@ function MakeClaim(){
                             <table>
                                 <tr className='vat'>
                                     <td>VAT:</td>
-                                    <td><input className='description' type='text'></input></td>
+                                    <td><input {...register("vat")} className='description' type='text'></input></td>
                                 </tr>
                             </table>
                         </form>
@@ -110,7 +121,7 @@ function MakeClaim(){
                 </div>
             </div>
             <nav className="nav">
-              <Link><button type='submit' onClick={handleSubmit}> SUBMIT </button></Link>
+              <Link><button type='submit' onClick={handleSubmit(onSubmit)}> SUBMIT </button></Link>
               <Link to="/home"><button formAction='' onClick={handleClick}> CANCEL </button></Link>
             </nav>
         </div>
