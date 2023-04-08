@@ -27,10 +27,6 @@ function MakeClaim(){
       navigate('/target-route');
     }
 
-    function handleImage(event) {
-
-    }
-
     return (
         <div className='MakeClaim'>
             <span>
@@ -44,36 +40,45 @@ function MakeClaim(){
                         <table>
                             <tr>
                                 <td><label>Type:</label></td>
-                                <td><input name='type' type='text'></input></td>
+                                <td>
+                                    <select className='description' name='type'>
+                                        <optgroup defaultValue={"Travel Claim"}>
+                                            <option>Travel Claim</option>
+                                            <option>Overnight Stay Claim</option>
+                                            <option>Meal Claim</option>
+                                            <option>Purchase Claim</option>
+                                        </optgroup>
+                                    </select>
+                                </td>
                             </tr>
                             <tr>
                                 <td><label>Amount:</label></td>
-                                <td><input name='amount' type='text'></input></td>
+                                <td><input className='description' name='amount' type='text'></input></td>
+                            </tr>
+                            <tr>
+                                <td><label>Expense Date:</label></td>
+                                <td><input className='description' name='date' type='text'></input></td>
                             </tr>
                             <tr>
                                 <td><label>Currency:</label></td>
                                 <td>
-                                <select name='currency'>
-                                    <optgroup defaultValue={"GBP - £"}>
-                                        <option>GBP - £</option>
-                                        <option>USD - $</option>
-                                        <option>EUR - €</option>
+                                <select className='description' name='currency'>
+                                    <optgroup defaultValue={"£ - GBP"}>
+                                        <option>£ - GBP</option>
+                                        <option>$ - USD</option>
+                                        <option>€ - EUR</option>
                                         <option>Other</option>
                                     </optgroup>
                                 </select>
                                 </td>
                             </tr>
                             <tr>
-                                <td><label>Expense Date:</label></td>
-                                <td><input name='date' type='text'></input></td>
-                            </tr>
-                            <tr>
                                 <td><label>Motive:</label></td>
-                                <td><input name='motive' type='text'></input></td>
+                                <td><input className='description' name='motive' type='text'></input></td>
                             </tr>
                             <tr>
                                 <td><label>Extra Details:</label></td>
-                                <td><textarea name='extra'></textarea></td>
+                                <td><textarea className='description' name='extra'></textarea></td>
                             </tr>
                         </table>
                     </form>
@@ -97,7 +102,7 @@ function MakeClaim(){
                             <table>
                                 <tr className='vat'>
                                     <td>VAT:</td>
-                                    <td className="description" ><input type='text'></input></td>
+                                    <td><input className='description' type='text'></input></td>
                                 </tr>
                             </table>
                         </form>

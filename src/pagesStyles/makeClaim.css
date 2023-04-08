@@ -41,6 +41,10 @@
     justify-content: space-evenly;
   }
 
+.MakeClaim .right {
+    align-items: center;
+  }
+
 .MakeClaim .middle h1{
   color: white;
   font-size: 25px;
@@ -64,13 +68,17 @@
   padding: 0.2em;
 }
 
+.MakeClaim .middle td{
+  max-width: 50%;
+}
+
 .MakeClaim .description{
   color: #561DE2;
 }
 
 .MakeClaim .middle .exProof {
   background-color: white;
-  padding: 0.3em 2em 0em 2em;
+  padding: 0em 2em;
   border-radius: 30px;
 }
 
@@ -118,3 +126,27 @@
     cursor: pointer;
 }
 
+/* Form styling */
+
+.MakeClaim input, .MakeClaim select, .MakeClaim textarea {
+  font-size: 20px;
+}
+
+.MakeClaim .left input {
+  width: 15.5rem;
+}
+
+.MakeClaim .right input {
+  width: 8rem;
+}
+
+.MakeClaim .left select {
+  background-color: white;
+  border-style: solid;
+  width: 16rem;
+}
+
+.MakeClaim .left textarea {
+  width: 15.5rem;
+  resize: none;
+}
