@@ -298,12 +298,13 @@ button:hover {
 /* Employee List --------------------------------------------------------------------------------*/
 .Emps{
   width: 100vw;
+  height: 100vh;
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
 }
 
 .Emps .bottom{
-  height: 100vh;
   background-color: white;
   display: flex;
   flex-wrap: wrap;
@@ -364,10 +365,11 @@ button:hover {
 
 .Emps .bottom .list table{
   width: 100%;
-  margin: 0.3%;
+  margin: 0.2em;
   background: #561DE2;
   border-radius: 50px;
-  padding: 0.5em;
+  align-content: center;
+  
 }
 
 .Emps .bottom .list table tr{
@@ -376,8 +378,7 @@ button:hover {
   font-size: 17px;
   color: white;
   text-align: center;
-  width: 100%;
-  right: 0px;
+  width: 100vw;
 }
 
 
@@ -446,7 +447,7 @@ button:hover {
 #allowanceTitle, #allowanceNum, #allowanceCap{
     font-style: normal;
     font-weight: 900;
-    font-size: 20px;
+    font-size: 25px;
     color: white;
     padding-left: 3em;
 }
