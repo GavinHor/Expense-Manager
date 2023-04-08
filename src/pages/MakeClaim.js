@@ -100,7 +100,7 @@ function MakeClaim(){
                         <form>
                             {/* Image uploader element */}
                             <input
-                                {...register("proofImage")}
+                                {...register("proofImage", {required: true})}
                                 type='file'
                                 onChange={(event) => {
                                     const file = event.target.files[0];
@@ -110,6 +110,7 @@ function MakeClaim(){
                                 }}
                             >
                             </input>
+                            {errors.proofImage?.type === 'required' && (<p className='error'>Proof Image is required</p>)}
                             <table>
                                 <tr className='vat'>
                                     <td>VAT:</td>
