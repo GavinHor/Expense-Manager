@@ -1,11 +1,12 @@
 import datetime
-import sqlite3
+import smtplib
+import ssl
+import base64
 
 #incomplete classes:
-#Registry, Admin, LineManager
+#Registry
 
 #todo(that i remember)
-#check error handling on functions, especially remove functions and add functions
 #finish other functions
 #go over the whole thing and make sure it makes sense and isn't messed up somewhere i missed
 
@@ -17,6 +18,9 @@ class Registry:
         #change to use query retireve
         self.FEmail=None
         self.HREmail=None
+        #fake email, will use another email for test
+        self.email = "expensetracker@fds.org"
+        self.password = "FDMET"
         self.claims=[]
         self.employees=[]
         self.managers={}
@@ -82,29 +86,78 @@ class Registry:
     def addReport(self,report):
         self.reports.append(report)
 
-    def removeEmployee(self,emp):
+    def removeEmployee(self,id):
         try:
-            self.employees.remove(emp.getID())
+            self.employees.pop(id)
         except:
             print("RegError: no such employee exists")
 
-    def removeClaim(self, claim):
+    def removeClaim(self, id):
         try:
-            self.claim.remove(claim.getID())
+            self.claim.pop(id)
         except:
             print("RegError: no such claim exists")
 
-    def notifyReliabilityLow(self):
-        pass
+    def setHR(self, email):
+        self.HREmail=email
+
+    def setFE(self, email):
+        self.FEmail=email
     
-    def notifyClaimProcessed(self):
-        pass
+    def notifyReliabilityLow(self, emp):
+        message=open("eemailscore.txt","r").read()
+        try:
+            #change server
+            smtp=smtplib.SMTP('localhost')
+            smtp.sendmail(self.email,emp.email,message)
+            print("Email sent")
+        except:
+            print("RegistryError: Could not send email")
+
+    def notifyAllowanceExceeded(self, emp):
+        message=open("eemailallowance.txt","r").read()
+        try:
+            #change server
+            smtp=smtplib.SMTP('localhost')
+            smtp.sendmail(self.email,emp.email,message)
+            print("Email sent")
+        except:
+            print("RegistryError: Could not send email")
     
-    def notifyHR(self):
-        pass
+    def notifyClaimProcessed(self, claim):
+        message=open("claimprocesses.txt","r").read()
+        message+=str(claim)
+        try:
+            #change server
+            smtp=smtplib.SMTP('localhost')
+            smtp.sendmail(self.email,[claim.employee.email,claim.manager.email],message)
+            print("Email sent")
+        except:
+            print("RegistryError: Could not send email")
     
-    def notifyFinanceForReimbursment(self):
-        pass
+    def notifyHR(self, report):
+
+        message=open("hremail.txt","r").read()
+        message+=str(report)
+        try:
+            #change server
+            smtp=smtplib.SMTP('localhost')
+            smtp.sendmail(self.email,self.HREmail,message)
+            print("Email sent")
+        except:
+            print("RegistryError: Could not send email")
+
+    
+    def notifyFinanceForReimbursment(self, report):
+        message=open("femail.txt","r").read()
+        message+=str(report)
+        try:
+            #change server
+            smtp=smtplib.SMTP('localhost')
+            smtp.sendmail(self.email,self.FEmail,message)
+            print("Email sent")
+        except:
+            print("RegistryError: Could not send email")
     
     def sendFinanceExpenditureSheet(self):
         pass
@@ -122,9 +175,9 @@ class Registry:
         return len(self.employees)
     
     def generateAdminID(self):
-        return len(self.admins)
-    
- #incomplete   
+        return len(self.admins) 
+
+#incomplete   
 class Admin:
     def __init__(self, email, password, reg) -> None:
         self.email=email
@@ -167,14 +220,10 @@ class Admin:
         else:
             print("AdminError: valid role not selected")
             return
-        
-
-
 
     def removeEmployee(self,emp):
-        emp=Employee()
         emp.getManager().removeEmployee(emp)
-        self.registry.removeEmployee(emp)
+        self.registry.removeEmployee(emp.id)
 
 class Employee:
     def __init__(self, id, email, password, role, manager, reg, personaldetails) -> None:
@@ -203,8 +252,11 @@ class Employee:
             return False
     
     def makeExpenseClaim(self, proof, expdate, amount, currency, extraDetails):
-        if self.allowanceExceeded or self.reliabilityLow:
-            print("EmployeeError: Allowance Exceeded")
+        if self.reliabilityLow:
+            self.reg.notifyReliabilityLow(self)
+            return
+        elif self.allowanceExceeded:
+            self.reg.notifyAllowanceExceeded(self)
             return
 
         id=self.reg.generateExpenseID()
@@ -228,17 +280,36 @@ class Employee:
     def changeAllowance(self, val):
         self.maxallowance=val
         self.allowance=val
+        self.allowanceExceeded=False
     
     def getScore(self):
         return self.reliabilityScore
     
     def updateScore(self, val):
         self.reliabilityScore=val
+
+        if self.reliabilityScore<-7:
+            self.reliabilityLow=True
+        else:
+            self.reliabilityLow=False
+
+        if self.reliabilityLow:
+            self.reg.notifyReliabilityLow(self)
+            return
     
     def updateAllowance(self, val):
         #this or add val to allowance
         #self.allowance=val
         self.allowance-=val
+
+        if self.allowance<0:
+            self.allowanceExceeded=True
+        else:
+            self.allowanceExceeded=False
+
+        if self.allowanceExceeded:
+            self.reg.notifyAllowanceExceeded(self)
+            return
     
     def filterClaimsbyDate(self, start, end):
         filtered=[]
@@ -254,7 +325,6 @@ class Employee:
                 filtered.append(claim)
         return filtered
 
-    
     def addSubmittedClaim(self, claim):
         self.claimsList.append(claim)
     
@@ -282,14 +352,21 @@ class LineManager(Employee):
     def getMyEmployees(self):
         return self.employeeList
     
-    #incomplete
     def approveClaim(self, claim):
-        claim=ExpenseClaim()
+        score = claim.employee.getScore()
+        if score<10:
+            claim.employee.updateScore(score+1)
         claim.changeStatus("Approved")
+        self.pendingClaims.remove(claim)
 
-    #incomplete
-    def reportClaim(self, claim, reason):
-        pass
+    def reportClaim(self, claim, details, reason):
+        claim.changeStatus("Reported")
+        self.pendingClaims.remove(claim)
+        self.reg.addReport(Report(claim, details, reason))
+        score = claim.employee.getScore()
+        if score>-10:
+            claim.employee.updateScore(score-1)
+        return
     
     def changeAllowance(self, emp, val):
         emp.changeAllowance(val)
@@ -342,6 +419,13 @@ class Report:
         self.reason=reason
         self.details=details
 
+    def __str__(self) -> str:
+        return f"""ID: {self.id}
+ClaimID: {self.claim.id}
+Reason: {self.reason}
+Details: {self.details}
+"""
+
     def getDetails(self):
         return self.details
     
@@ -359,6 +443,18 @@ class ExpenseClaim:
         self.proof=proof
         self.expensedate=expdate
         self.manager=manager
+
+    def __str__(self) -> str:
+        return f"""ID: {self.id}
+ClaimID: {self.claim.id}
+EmployeeID: {self.employee.id}
+ManagerID: {self.manager.id}
+Amount: {self.amount}
+Submit Date: {self.submitdate}
+Expense Date: {self.expensedate}
+ProofID: {self.proof.id}
+Status: {self.status}
+"""
 
     def addExpenseProof(self,proof):
         self.proof=proof
