@@ -37,10 +37,9 @@ function MakeClaim(){
                 <SideBar isOpen={sidebarOpen} toggleSidebar={handleViewSidebar} />
             </span>
             <Nav onClick={handleViewSidebar} initials={initials} name={name} email={email}/>
-            <div className='middle'>
+            <form className='middle' id="claimform" action='http://localhost:5000/submitClaim' method='POST'>
                 <div className='left'>
                     <h1>Claim Form:</h1>
-                    <form id="claimform" action='/expenseClaimInfo'>
                         <table>
                             <tr>
                                 <td><label>Type:</label></td>
@@ -91,36 +90,34 @@ function MakeClaim(){
                                 <td><textarea {...register("extra")} className='description'></textarea></td>
                             </tr>
                         </table>
-                    </form>
-                </div>
-                <div className='right'>
+                    </div>
+                    <div className='right'>
                     <h1>Expense Proof:</h1>
                     <div className='exProof'>
-                    <img src={proofImage} alt='Proof image'></img>
-                        <form>
-                            {/* Image uploader element */}
-                            <input
-                                {...register("proofImage", {required: true})}
-                                type='file'
-                                onChange={(event) => {
-                                    const file = event.target.files[0];
-                                    console.log(file);
-                                    const imageUrl = URL.createObjectURL(file);
-                                    setProofImage(imageUrl);
-                                }}
-                            >
-                            </input>
-                            {errors.proofImage?.type === 'required' && (<p className='error'>Proof Image is required</p>)}
-                            <table>
-                                <tr className='vat'>
-                                    <td>VAT:</td>
-                                    <td><input {...register("vat")} className='description' type='text'></input></td>
-                                </tr>
-                            </table>
-                        </form>
+                        {/* Display image tag only if image not null */}
+                        {proofImage ? (<img src={proofImage} alt='Proof image'></img>) : null}
+                        {/* Image uploader element */}
+                        <input
+                            {...register("proofImage", {required: true})}
+                            type='file'
+                            onChange={(event) => {
+                                const file = event.target.files[0];
+                                console.log(file);
+                                const imageUrl = URL.createObjectURL(file);
+                                setProofImage(imageUrl);
+                            }}
+                        >
+                        </input>
+                        {errors.proofImage?.type === 'required' && (<p className='error'>Proof Image is required</p>)}
+                        <table>
+                            <tr className='vat'>
+                                <td>VAT:</td>
+                                <td><input {...register("vat")} className='description' type='text'></input></td>
+                            </tr>
+                        </table>
                     </div>
                 </div>
-            </div>
+            </form>
             <nav className="nav">
               <Link><button type='submit' onClick={handleSubmit(onSubmit)}> SUBMIT </button></Link>
               <Link to="/home"><button formAction='' onClick={handleClick}> CANCEL </button></Link>
