@@ -9,6 +9,8 @@ import Nav from '../components/Nav';
 import ClaimBtn from '../components/ClaimBtn';
 import { Link } from 'react-router-dom';
 
+import { myClaims, userDetails } from '../data/userDetails';
+
 function EmployeeHomePage() {
   const name="Asia Belfiore"
   const initials="AB"
@@ -23,6 +25,14 @@ function EmployeeHomePage() {
   function handleClick(event) {
     navigate('/target-route');
   }
+
+  const listClaims = myClaims.map(claim =>
+          <ClaimBtn click="/ProcessClaim" 
+              one={claim.type} 
+              two={claim.id} 
+              three={claim.amount} 
+              four={claim.submission}
+              five={claim.expDate}/>);
 
     return (
     <div className="EmployeeHomePage">
@@ -41,13 +51,8 @@ function EmployeeHomePage() {
             <div class="claims">
                 <table>
                     <legend id="EmployeePageHeading">Pending Claims:</legend>
-                  <tr><td className="EmployeeHpExpense"><ClaimBtn name="Travel Claim" amount="£ 51.99" date="01/01/2023"/></td></tr>
-                  <tr><td><ClaimBtn name="Meal Claim" amount="£ 21.99" date="20/03/2023"/></td></tr>
-                  <tr><td><ClaimBtn name="Travel Claim" amount="£ 51.99" date="01/01/2023"/></td></tr>
-                  <tr><td><ClaimBtn name="Meal Claim" amount="£ 21.99" date="20/03/2023"/></td></tr>
-                  <tr><td><ClaimBtn name="Travel Claim" amount="£ 51.99" date="01/01/2023"/></td></tr>
-                  <tr><td><ClaimBtn name="Meal Claim" amount="£ 21.99" date="20/03/2023"/></td></tr>
-                </table>
+                  <tr><td className="EmployeeHpExpense">{listClaims}</td></tr>
+                  </table>
             </div>
           </div>
           <nav class="actions">

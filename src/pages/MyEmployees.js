@@ -6,15 +6,21 @@ import SideBar from '../components/SideBar';
 import Nav from '../components/Nav';
 import ClaimBtn from '../components/ClaimBtn';
 
+import { employees } from '../data/employees';
+
 function MyEmp(){
     const name="Asia Belfiore"
     const initials="AB"
     const email="a.belfiore@FDM.uk"
 
+    const listEmps = employees.map(employee =>
+        <tr>
+            <td style={{width: '70em'}}><ClaimBtn click="/ProcessClaim" one={employee.name} two={employee.id} three={employee.role} four={employee.score}/> </td>
+            <td style={{width: '10em'}}><Link to="/claims"><button  style={{width:'8em'}}className='button'> VIEW CLAIMS</button></Link> </td> 
+        </tr>);
+
     const navigate = useNavigate();
-    function handleClick(event) {
-      navigate('/target-route');
-    }
+
 
     const [sidebarOpen, setSideBarOpen] = useState(false);
     const handleViewSidebar = () => {
@@ -37,36 +43,7 @@ function MyEmp(){
                     </tr>
                 </table>
                 <div class="list">
-                    <table>
-                    <tr>
-                        <td><ClaimBtn click="/ProcessClaim" one={name} two="AB 0123" three="Consultant " four="91%"/></td>
-                        <td><Link to="/claims"><button className='button'> VIEW CLAIMS</button></Link></td>
-                    </tr>
-                    <tr>
-                        <td><ClaimBtn click="/ProcessClaim" one={name} two="AB 0123" three="Consultant " four="91%"/></td>
-                        <td><Link to="/claims"><button className='button'> VIEW CLAIMS</button></Link></td>
-                    </tr>
-                    <tr>
-                        <td><ClaimBtn click="/ProcessClaim" one={name} two="AB 0123" three="Consultant " four="91%"/></td>
-                        <td><Link to="/claims"><button className='button'> VIEW CLAIMS</button></Link></td>
-                    </tr>
-                    <tr>
-                        <td><ClaimBtn click="/ProcessClaim" one={name} two="AB 0123" three="Consultant " four="91%"/></td>
-                        <td><Link to="/claims"><button className='button'> VIEW CLAIMS</button></Link></td>
-                    </tr>
-                    <tr>
-                        <td><ClaimBtn click="/ProcessClaim" one={name} two="AB 0123" three="Consultant " four="91%"/></td>
-                        <td><Link to="/claims"><button className='button'> VIEW CLAIMS</button></Link></td>
-                    </tr>
-                    <tr>
-                        <td><ClaimBtn click="/ProcessClaim" one={name} two="AB 0123" three="Consultant " four="91%"/></td>
-                        <td><Link to="/claims"><button className='button'> VIEW CLAIMS</button></Link></td>
-                    </tr>
-                    <tr>
-                        <td><ClaimBtn click="/ProcessClaim" one={name} two="AB 0123" three="Consultant " four="91%"/></td>
-                        <td><Link to="/claims"><button className='button'> VIEW CLAIMS</button></Link></td>
-                    </tr>
-                    </table>
+                    <table> {listEmps} </table>
                 </div>
             </div>
         </div>

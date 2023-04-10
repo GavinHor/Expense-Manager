@@ -29,7 +29,7 @@ function PersonalInfo ({}){
                 </span>
                 <Nav onClick={handleViewSidebar} initials={initials} name={name} email={email}/>
                 <header className="header">
-                    <div>
+                    <div className='left'>
                         <h4>My details</h4>
                         <table>
                             <tr>
@@ -53,8 +53,8 @@ function PersonalInfo ({}){
                                 <td className="description">********9</td>
                             </tr>
                         </table>
-                    </div>
-                    <div style={{marginBottom: '1em'}}>
+                    </div >
+                    <div className='right' style={{marginBottom: '1em'}}>
                         <h4>My Employees</h4>
                         <table>
                             <tr>
