@@ -5,11 +5,16 @@ import SideBar from '../components/SideBar';
 import Nav from '../components/Nav';
 import ClaimBtn from '../components/ClaimBtn';
 
+import { claims } from '../data/claims';
+
+
 function Claims(){
     const name="Asia Belfiore"
     const initials="AB"
     const email="a.belfiore@FDM.uk"
-    const claimName="Travel"
+
+    const listClaims = claims.map(claim =>
+        <ClaimBtn click="/ProcessClaim" one={claim.type} two={claim.id} three={claim.amount} four={claim.submission} five={claim.expDate}/>);    
 
     const [sidebarOpen, setSideBarOpen] = useState(false);
     const handleViewSidebar = () => {
@@ -33,12 +38,7 @@ function Claims(){
                 </table>
                 <div class="list">
                     <table>
-                        <tr><td><ClaimBtn click="/expenseClaimInfo" one={name} two="AB 0123" three="£ 51.99" four="01/01/ 2023"/></td></tr>
-                        <tr><td><ClaimBtn click="/expenseClaimInfo" one={name} two="AB 0123" three="£ 51.99" four="01/01/ 2023"/></td></tr>
-                        <tr><td><ClaimBtn click="/expenseClaimInfo" one={name} two="AB 0123" three="£ 51.99" four="01/01/ 2023"/></td></tr>
-                        <tr><td><ClaimBtn click="/expenseClaimInfo" one={name} two="AB 0123" three="£ 51.99" four="01/01/ 2023"/></td></tr>
-                        <tr><td><ClaimBtn click="/expenseClaimInfo" one={name} two="AB 0123" three="£ 51.99" four="01/01/ 2023"/></td></tr>
-                        <tr><td><ClaimBtn click="/expenseClaimInfo" one={name} two="AB 0123" three="£ 51.99" four="01/01/ 2023"/></td></tr>
+                        <tr><td>{listClaims}</td></tr>
                     </table>
                 </div>
             </div>

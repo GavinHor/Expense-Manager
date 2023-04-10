@@ -21,7 +21,8 @@ function Login(){
         event.preventDefault(); 
     
         if (email!=userEmail || password!=userPw){
-            alert('Wrong Credentials.');
+            if (email=='' || password=='') alert('Please input your credentials.');
+            else alert('Wrong Credentials.');
         }
         else {
                 navigate('/home');

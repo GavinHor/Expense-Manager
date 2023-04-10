@@ -56,8 +56,9 @@
   .InitialPage .bottom{
     display: flex;
     justify-content: center;
-    height: 100vh;
+    height: auto;
     background-color: #561DE2;
+    bottom: 0px;
   }
 
 
