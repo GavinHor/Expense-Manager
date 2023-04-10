@@ -2,7 +2,7 @@ import datetime
 import sqlite3
 
 #incomplete classes:
-#Registry, Admin, Employee subclasses
+#Registry, Admin, LineManager
 
 #todo(that i remember)
 #check error handling on functions, especially remove functions and add functions
@@ -40,28 +40,32 @@ class Registry:
             return len(self.reports)
 
     def getAdmin(self, id):
-        conn=sqlite3.connect(self.dburl)
-        db=conn.cursor()
-        db.execute("select * from Admin where id="+id)
-        conn.close()
+        try:
+            return self.admins[id]
+        except:
+            print("RegError: no such admin with given id")
+            return None
 
     def getEmployee(self, id):
-        conn=sqlite3.connect(self.dburl)
-        db=conn.cursor()
-        db.execute("select * from Employee where id="+id)
-        conn.close()
+        try:
+            return self.employees[id]
+        except:
+            print("RegError: no such employee with given id")
+            return None
 
     def getExpenseClaim(self, id):
-        conn=sqlite3.connect(self.dburl)
-        db=conn.cursor()
-        db.execute("select * from 'Expense Claims' where id="+id)
-        conn.close()
+        try:
+            return self.claims[id]
+        except:
+            print("RegError: no such claim with given id")
+            return None
 
     def getReport(self, id):
-        conn=sqlite3.connect(self.dburl)
-        db=conn.cursor()
-        db.execute("select * from Reports where id="+id)
-        conn.close()
+        try:
+            return self.reports[id]
+        except:
+            print("RegError: no such report with given id")
+            return None
 
     def addClaim(self,claim):
         self.claims.append(claim)
@@ -80,9 +84,15 @@ class Registry:
 
     def removeEmployee(self,emp):
         try:
-            self.employees.remove(emp)
+            self.employees.remove(emp.getID())
         except:
-            pass #add error handling
+            print("RegError: no such employee exists")
+
+    def removeClaim(self, claim):
+        try:
+            self.claim.remove(claim.getID())
+        except:
+            print("RegError: no such claim exists")
 
     def notifyReliabilityLow(self):
         pass
@@ -103,11 +113,17 @@ class Registry:
         pass
     
     def generateExpenseID(self):
-        pass
+        return len(self.claims)
     
     def generateProofID(self):
-        pass
-
+        return len(self.reports)
+    
+    def generateEmployeeID(self):
+        return len(self.employees)
+    
+    def generateAdminID(self):
+        return len(self.admins)
+    
  #incomplete   
 class Admin:
     def __init__(self, email, password, reg) -> None:
@@ -123,22 +139,48 @@ class Admin:
 
     #these two functions require modifying registry, if direct modification isn't considered safe
     #then add functions to registry, with or without required admin verification
-    def addEmployee(self,email,fname,lname,pw, role):
+    def addEmployee(self,email,fname,lname,pw, role,personaldetails):
+        lmid=[]
+        empnum=[]
+
+        for lm in self.registry.managers:
+            lmid.append(lm.id)
+            empnum.append(len(lm.employeeList))
+        personaldetails['fname']=fname
+        personaldetails['lname']=lname
+        id = self.registry.generateEmployeeID()
+        manager=lmid[empnum.index(min(empnum))]
+
         if role=="Internal Staff":
-            emp = InternalStaff()
+            emp = InternalStaff(id,email,pw,"Internal Staff",self.registry.getEmployee(manager),self.registry,personaldetails)
+            self.registry.addEmployee(emp)
+            self.registry.getEmployee(manager).addEmployee(emp)
         elif role=="Consultant":
-            emp = Consultant()
+            emp = Consultant(id,email,pw,"Consultant",self.registry.getEmployee(manager),self.registry,personaldetails)
+            self.registry.addEmployee(emp)
+            self.registry.getEmployee(manager).addEmployee(emp)
         elif role=="Line Manager":
-            emp = LineManager()
+            #who manages the line manager? solve
+            emp = LineManager(id,email,pw,"Line Manager",None,self.registry,personaldetails,{})
+            self.registry.addEmployee(emp)
+            self.registry.addLineManager(emp)
         else:
-            pass #add error
+            print("AdminError: valid role not selected")
+            return
+        
+
+
 
     def removeEmployee(self,emp):
+        emp=Employee()
         emp.getManager().removeEmployee(emp)
         self.registry.removeEmployee(emp)
 
 class Employee:
-    def __init__(self, email, password, role, manager, reg, personaldetails) -> None:
+    def __init__(self, id, email, password, role, manager, reg, personaldetails) -> None:
+        self.allowanceExceeded=False
+        self.reliabilityLow=False
+        self.id=id
         self.name=personaldetails['fname']+personaldetails['lname']
         self.email=email
         self.password=password
@@ -161,8 +203,11 @@ class Employee:
             return False
     
     def makeExpenseClaim(self, proof, expdate, amount, currency, extraDetails):
-        
-        id=self.reg.newID("Claims")
+        if self.allowanceExceeded or self.reliabilityLow:
+            print("EmployeeError: Allowance Exceeded")
+            return
+
+        id=self.reg.generateExpenseID()
         
         if extraDetails[0]=="Overnight":
             claim=OvernightStayExpense(id, self, amount, currency, proof, self.manager, expdate, extraDetails[1], extraDetails[2], extraDetails[3])
@@ -172,7 +217,7 @@ class Employee:
             claim=PurchaseExpense(id, self, amount, currency, proof, self.manager, expdate, extraDetails[1], extraDetails[2], extraDetails[3], extraDetails[4])
         elif extraDetails[0]=="Travel":
             claim=TravelExpense(id, self, amount, currency, proof, self.manager, expdate, extraDetails[1], extraDetails[2])
-
+        self.updateAllowance(amount)
         self.reg.addClaim(claim)
         self.manager.addPendingClaim(claim)
         self.addSubmittedClaim(claim)
@@ -192,8 +237,8 @@ class Employee:
     
     def updateAllowance(self, val):
         #this or add val to allowance
-        self.allowance=val
-        #self.allowance+=val
+        #self.allowance=val
+        self.allowance-=val
     
     def filterClaimsbyDate(self, start, end):
         filtered=[]
@@ -223,12 +268,11 @@ class Employee:
         if pw==self.password:
             return True
         else:
-            return False
-    
+            return False  
 
 class LineManager(Employee):
-    def __init__(self, email, password, role, manager, reg, personaldetails, elist) -> None:
-        super().__init__(email, password, role, manager, reg, personaldetails)
+    def __init__(self, id, email, password, role, manager, reg, personaldetails, elist) -> None:
+        super().__init__(id, email, password, role, manager, reg, personaldetails)
         self.employeeList=elist
         self.pendingClaims=[]
 
@@ -238,9 +282,12 @@ class LineManager(Employee):
     def getMyEmployees(self):
         return self.employeeList
     
+    #incomplete
     def approveClaim(self, claim):
-        pass
+        claim=ExpenseClaim()
+        claim.changeStatus("Approved")
 
+    #incomplete
     def reportClaim(self, claim, reason):
         pass
     
@@ -260,16 +307,22 @@ class LineManager(Employee):
     def removeClaimFromPendingList(self,claim):
         self.pendingClaims.remove(claim)
 
+    def addEmployee(self,emp):
+        self.employeeList.append(emp)
+
     def removeEmployee(self,emp):
-        self.employeeList.remove(emp)
+        try:
+            self.employeeList.remove(emp)
+        except:
+            print("ManagerError: no such employee in list")
 
 class InternalStaff(Employee):
-    def __init__(self, email, password, role, manager, reg, personaldetails) -> None:
-        super().__init__(email, password, role, manager, reg, personaldetails)
+    def __init__(self, id, email, password, role, manager, reg, personaldetails) -> None:
+        super().__init__(id, email, password, role, manager, reg, personaldetails)
 
 class Consultant(Employee):
-    def __init__(self, email, password, role, manager, reg, personaldetails, location, currency) -> None:
-        super().__init__(email, password, role, manager, reg, personaldetails)
+    def __init__(self, id, email, password, role, manager, reg, personaldetails, location, currency) -> None:
+        super().__init__(id, email, password, role, manager, reg, personaldetails)
         self.location=location
         self.currency=currency
 
@@ -283,7 +336,8 @@ class Consultant(Employee):
         return [*self.personalDetails,self.location]
 
 class Report:
-    def __init__(self, claim, reason, details) -> None:
+    def __init__(self, id, claim, reason, details) -> None:
+        self.id=id
         self.claim=claim
         self.reason=reason
         self.details=details
@@ -296,11 +350,10 @@ class Report:
 
 class ExpenseClaim:
     def __init__(self, id, employee, amount, currency, proof, manager, expdate) -> None:
-        self.statuses=["Pending","Approved","Reported"]
         self.id=id
         self.employee=employee
         self.submitdate=datetime.date.today()
-        self.status=self.statuses[0]
+        self.status="Pending"
         self.amount=amount
         self.currency=currency
         self.proof=proof
@@ -321,8 +374,15 @@ class ExpenseClaim:
     def getLineManager(self):
         return self.manager
     
-    def getClaimDetails():
-        return None
+    def getClaimDetails(self):
+        return {'id':self.id,
+                'amount': (self.currency+" "+str(self.amount)),
+                'status':self.status,
+                'proof':self.proof,
+                'submitdate':self.submitdate,
+                'expensedate':self.expensedate,
+                'employee':self.employee}
+
 class ExpenseProof:
     def __init__(self,id,image,vat) -> None:
         self.id=id
@@ -346,7 +406,11 @@ class OvernightStayExpense(ExpenseClaim):
         self.checkoutdate=checkoutdate
 
     def getClaimDetails(self):
-        return [self.stype,self.sname,self.checkoutdate]
+        details = super().getClaimDetails()
+        details['structuretype']=self.stype
+        details['structurename']=self.sname
+        details['checkoutdate']=self.checkoutdate
+        return details
 
 class MealExpense(ExpenseClaim):
     def __init__(self, id, employee, amount, currency, proof, manager, expdate, mtype, location, stype) -> None:
@@ -356,8 +420,11 @@ class MealExpense(ExpenseClaim):
         self.stype=stype
 
     def getClaimDetails(self):
-        return [self.mtype,self.location,self.stype]
-
+        details=super().getClaimDetails()
+        details['mealtype']=self.mtype
+        details['location']=self.location
+        details['structuretype']=self.stype
+        return details
 class PurchaseExpense(ExpenseClaim):
     def __init__(self, id, employee, amount, currency, proof, manager, expdate, ptype, itemno, items, store) -> None:
         super().__init__(id, employee, amount, currency, proof, manager, expdate)
@@ -367,7 +434,12 @@ class PurchaseExpense(ExpenseClaim):
         self.store=store
 
     def getClaimDetails(self):
-        return[self.ptype,self.itemno,self.items,self.store]
+        details=super().getClaimDetails()
+        details['purchasetype']=self.ptype
+        details['quantity']=self.itemno
+        details['items']=self.items
+        details['store']=self.store
+        return details
 
 class TravelExpense(ExpenseClaim):
     def __init__(self, id, employee, amount, currency, proof, manager, expdate, transtype, motive) -> None:
@@ -376,4 +448,7 @@ class TravelExpense(ExpenseClaim):
         self.motive=motive
 
     def getClaimDetails(self):
-        return[self.transtype,self.motive]
+        details=super().getClaimDetails()
+        details['transporttype']=self.transtype
+        details['motive']=self.motive
+        return details
