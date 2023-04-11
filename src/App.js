@@ -10,6 +10,7 @@ import EmployeeHomePage from './pages/EmployeeHomePage';
 import PersonalInfo from './pages/PersonalInfo';
 import ProcessClaim from './pages/ProcessClaim';
 import PurchaseExpense from './pages/PurchaseExpense';
+import MakeClaim from './pages/MakeClaim';
 
 export default function App() {
   return (
@@ -23,7 +24,7 @@ export default function App() {
         <Route path="/myDetails" element={<PersonalInfo />} />
         <Route path="/ProcessClaim" element={<ProcessClaim />} />
         <Route path="/expenseClaimInfo" element={<PurchaseExpense />} />
-
+        <Route path="/makeClaim" element={<MakeClaim />} />
         <Route path="/EmployeeHome" element={<EmployeeHomePage />} />
       </Routes>
     </div>

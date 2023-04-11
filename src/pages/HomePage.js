@@ -63,7 +63,7 @@ function HomePage() {
             </div>
           </div>
           <nav class="actions">
-            <Link to="/home"> <button onClick={handleClick}>Claim Expense</button> </Link>
+            <Link to="/makeClaim"> <button onClick={handleClick}>Claim Expense</button> </Link>
             <Link to="/claims"> <button onClick={handleClick}> Personal Claims </button> </Link>
             <Link to="/myEmployees"> <button onClick={handleClick}> My Employees </button> </Link>
           </nav>
