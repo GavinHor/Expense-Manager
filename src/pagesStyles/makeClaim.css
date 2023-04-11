@@ -77,6 +77,8 @@
 }
 
 .MakeClaim .middle .exProof {
+  display: flex;
+  flex-direction: column;
   background-color: white;
   padding: 0em 2em;
   border-radius: 30px;
