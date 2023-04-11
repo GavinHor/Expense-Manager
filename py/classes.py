@@ -3,18 +3,15 @@ import smtplib
 import ssl
 import base64
 
-#incomplete classes:
-#Registry
 
 #todo(that i remember)
-#finish other functions
+#finish expense sheet functions
 #go over the whole thing and make sure it makes sense and isn't messed up somewhere i missed
 
 class Registry:
-    def __init__(self, db):
-        #either keep conn open or open and close with each call
-        self.dburl=db
-        #self.conn=sqlite3.connect(db)
+    def __init__(self, path):
+        #optional path to save registry to
+        self.path=path
         #change to use query retireve
         self.FEmail=None
         self.HREmail=None
@@ -103,8 +100,27 @@ class Registry:
 
     def setFE(self, email):
         self.FEmail=email
+
+    def tryLoginEmp(self,email,password):
+        for emp in self.employees:
+            if emp.email==email:
+                if emp.password==password:
+                    return emp.id
+                else:
+                    return -1
+        return -1
+    
+    def tryLoginAdmin(self,email,password):
+        for adm in self.admins:
+            if adm.email==email:
+                if adm.password==password:
+                    return adm.id
+                else:
+                    return -1
+        return -1
     
     def notifyReliabilityLow(self, emp):
+        return
         message=open("eemailscore.txt","r").read()
         try:
             #change server
@@ -115,6 +131,7 @@ class Registry:
             print("RegistryError: Could not send email")
 
     def notifyAllowanceExceeded(self, emp):
+        return
         message=open("eemailallowance.txt","r").read()
         try:
             #change server
@@ -125,6 +142,7 @@ class Registry:
             print("RegistryError: Could not send email")
     
     def notifyClaimProcessed(self, claim):
+        return
         message=open("claimprocesses.txt","r").read()
         message+=str(claim)
         try:
@@ -136,7 +154,7 @@ class Registry:
             print("RegistryError: Could not send email")
     
     def notifyHR(self, report):
-
+        return
         message=open("hremail.txt","r").read()
         message+=str(report)
         try:
@@ -149,6 +167,7 @@ class Registry:
 
     
     def notifyFinanceForReimbursment(self, report):
+        return
         message=open("femail.txt","r").read()
         message+=str(report)
         try:
