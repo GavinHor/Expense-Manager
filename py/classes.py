@@ -219,7 +219,8 @@ class Admin:
         personaldetails['fname']=fname
         personaldetails['lname']=lname
         id = self.registry.generateEmployeeID()
-        manager=lmid[empnum.index(min(empnum))]
+        if role!="Line Manager":
+            manager=lmid[empnum.index(min(empnum))]
 
         if role=="Internal Staff":
             emp = InternalStaff(id,email,pw,"Internal Staff",self.registry.getEmployee(manager),self.registry,personaldetails)
