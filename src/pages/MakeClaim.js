@@ -7,10 +7,12 @@ import '../pagesStyles/makeClaim.css';
 import SideBar from '../components/SideBar';
 import Nav from '../components/Nav';
 
+import { userDetails } from '../data/userDetails';
+
 function MakeClaim(){
-    const name="Asia Belfiore"
-    const initials="AB"
-    const email="a.belfiore@FDM.uk"
+    const name=userDetails.map(user=> user.name)
+    const initials=userDetails.map(user=> user.initials)
+    const email=userDetails.map(user=> user.email)
 
     const [sidebarOpen, setSideBarOpen] = useState(false);
     const handleViewSidebar = () => {
@@ -37,9 +39,10 @@ function MakeClaim(){
                 <SideBar isOpen={sidebarOpen} toggleSidebar={handleViewSidebar} />
             </span>
             <Nav onClick={handleViewSidebar} initials={initials} name={name} email={email}/>
-            <form className='middle' id="claimform" action='http://localhost:5000/submitClaim' method='POST'>
+            <div className='middle'>
                 <div className='left'>
                     <h1>Claim Form:</h1>
+                    <form id="claimform" action='/expenseClaimInfo'>
                         <table>
                             <tr>
                                 <td><label>Type:</label></td>
@@ -90,37 +93,39 @@ function MakeClaim(){
                                 <td><textarea {...register("extra")} className='description'></textarea></td>
                             </tr>
                         </table>
-                    </div>
-                    <div className='right'>
+                    </form>
+                </div>
+                <div className='right'>
                     <h1>Expense Proof:</h1>
                     <div className='exProof'>
-                        {/* Display image tag only if image not null */}
-                        {proofImage ? (<img src={proofImage} alt='Proof image'></img>) : null}
-                        {/* Image uploader element */}
-                        <input
-                            {...register("proofImage", {required: true})}
-                            type='file'
-                            onChange={(event) => {
-                                const file = event.target.files[0];
-                                console.log(file);
-                                const imageUrl = URL.createObjectURL(file);
-                                setProofImage(imageUrl);
-                            }}
-                        >
-                        </input>
-                        {errors.proofImage?.type === 'required' && (<p className='error'>Proof Image is required</p>)}
-                        <table>
-                            <tr className='vat'>
-                                <td>VAT:</td>
-                                <td><input {...register("vat")} className='description' type='text'></input></td>
-                            </tr>
-                        </table>
+                    <img src={proofImage} alt='Proof image'></img>
+                        <form>
+                            {/* Image uploader element */}
+                            <input
+                                {...register("proofImage", {required: true})}
+                                type='file'
+                                onChange={(event) => {
+                                    const file = event.target.files[0];
+                                    console.log(file);
+                                    const imageUrl = URL.createObjectURL(file);
+                                    setProofImage(imageUrl);
+                                }}
+                            >
+                            </input>
+                            {errors.proofImage?.type === 'required' && (<p className='error'>Proof Image is required</p>)}
+                            <table>
+                                <tr className='vat'>
+                                    <td>VAT:</td>
+                                    <td><input {...register("vat")} className='description' type='text'></input></td>
+                                </tr>
+                            </table>
+                        </form>
                     </div>
                 </div>
-            </form>
+            </div>
             <nav className="nav">
               <Link><button type='submit' onClick={handleSubmit(onSubmit)}> SUBMIT </button></Link>
-              <Link to="/home"><button formAction='' onClick={handleClick}> CANCEL </button></Link>
+              <Link to={{pathname:'/home' , state: '1' }}><button formAction='' onClick={handleClick}> CANCEL </button></Link>
             </nav>
         </div>
     )

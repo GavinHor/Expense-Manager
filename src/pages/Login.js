@@ -1,31 +1,31 @@
 import '../pagesStyles/PagesStyles.css';
-import Spline from '@splinetool/react-spline';
 import logo from '../images/FDM_icon_noBg.png'
+import Spline from '@splinetool/react-spline';
 
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
 
-
-function Login(){
-    // User Data from Database
+function Login(props){
+    const id="1";
+    // User Data 
     const userEmail="a.belfiore@FDM.uk";
     const userPw="ciao";
 
     const [email, setEmail] = useState('');
+
     const [password, setPw] = useState('');
 
     const navigate = useNavigate();
 
     const handleSubmit = event => {
         event.preventDefault(); 
-    
+      
         if (email!=userEmail || password!=userPw){
-            if (email=='' || password=='') alert('Please input your credentials.');
-            else alert('Wrong Credentials.');
-        }
-        else {
-                navigate('/home');
+          if (email=='' || password=='') alert('Please input your credentials.');
+          else alert('Wrong Credentials.');
+        } else {
+          navigate('/home', { state: { id: "1" } });
         }
       };
 
@@ -51,7 +51,7 @@ function Login(){
                     <input
                             className="input_pass"
                             name="password"
-                            type="text"
+                            type="password"
                             placeholder="Password"
                             onChange={event => setPw(event.target.value)}
                             value={password}
@@ -62,7 +62,7 @@ function Login(){
         </div>
         <div className="right_side">
             <img src={logo} alt='logo'/>
-            <Spline className='anim' scene="https://prod.spline.design/ZZB4e2r-vqN82pQ8/scene.splinecode" />       
+            <Spline scene="https://prod.spline.design/ZZB4e2r-vqN82pQ8/scene.splinecode" />
         </div>
     </div>
     )

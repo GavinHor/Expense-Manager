@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState} from 'react';
 import { useNavigate , Link } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 import '../pagesStyles/PagesStyles.css';
 
@@ -8,35 +9,52 @@ import SideBar from '../components/SideBar';
 import Nav from '../components/Nav';
 import ClaimBtn from '../components/ClaimBtn';
 
+import { myClaims , userDetails } from '../data/userDetails';
 import { claims } from '../data/claims';
-import { userDetails } from '../data/userDetails';
 
-function HomePage() {
-  // const name={userDetails.name};
-  // const initials={userDetails.initials};
-  // const email={userDetails.email};
 
-  const name="Asia Belfiore";
-  const initials="AB";
-  const email="a.belfiore@FDM.uk";
+function HomePage(props) {
+  const { state } = useLocation();
+  const data = state.id;  
 
-  const listClaims = claims.map(claim =>
-    <ClaimBtn click="/ProcessClaim" 
-              one={claim.employee} 
-              two={claim.id} 
-              three={claim.type} 
-              four={claim.amount}
-              five={claim.submission}/>);
+  const name=userDetails.filter(user=> user.id==data).map(user=> user.name);
+  const initials=userDetails.filter(user=> user.id==data).map(user=> user.initials);
+  const email=userDetails.filter(user=> user.id==data).map(user=> user.email);
+  const role=userDetails.filter(user=> user.id==data).map(user=> user.role);
+  const empId=userDetails.filter(user=> user.id==data).map(user=> user.id);
+  var listClaims={};
+
+  if(role!="Line Manager"){
+    listClaims = myClaims.filter(claim=>claim.status=='PENDING').map(claim =>
+      <ClaimBtn click="/ProcessClaim" state={claim.id} empId={data}
+                one={claim.type} 
+                two={claim.id} 
+                three={claim.type} 
+                four={claim.amount}
+                five={claim.submission}/>);
+  }
+  else{ 
+    listClaims = claims.filter(claim=>claim.status=='PENDING').map(claim =>
+      <ClaimBtn click="/ProcessClaim" state={claim.id} empId={data}
+                one={claim.employee} 
+                two={claim.id} 
+                three={claim.type} 
+                four={claim.amount}
+                five={claim.submission}/>);
+  }
+
+  
+
 
   const [sidebarOpen, setSideBarOpen] = useState(false);
   const handleViewSidebar = () => {
     setSideBarOpen(!sidebarOpen);
   }
 
-  const navigate = useNavigate();
-  function handleClick(event) {
-    navigate('/target-route');
-  }
+  const actions=userDetails.filter(user=> user.role=="Line Manager").map(user=> 
+        <Link to="/myEmployees" state={{id:empId}}> <button > My Employees </button> </Link>
+    )
+    
 
     return (
     <div className="HomePage">
@@ -49,23 +67,23 @@ function HomePage() {
             <h5>Pending Claims:</h5>
               <table className='table'>
                 <tr>
-                  <td>EMPLOYEE</td>
-                  <td>CLAIM ID</td>
-                  <td>CLAIM TYPE</td>
+                  <td>NAME</td>
+                  <td> ID</td>
+                  <td> TYPE</td>
                   <td>AMOUNT</td>
                   <td>SUBMISSION</td>
                 </tr>
               </table>
-            <div class="claims">
+            <div className="claims">
                 <table>
                   <tr><td>{listClaims}</td></tr>
                  </table>
             </div>
           </div>
-          <nav class="actions">
-            <Link to="/makeClaim"> <button onClick={handleClick}>Claim Expense</button> </Link>
-            <Link to="/claims"> <button onClick={handleClick}> Personal Claims </button> </Link>
-            <Link to="/myEmployees"> <button onClick={handleClick}> My Employees </button> </Link>
+          <nav className="actions">
+            <Link to="/MakeClaim"> <button >Claim Expense</button> </Link>
+            <Link to="/claims" state={{id:empId}}> <button > Personal Claims </button> </Link>
+            {actions}
           </nav>
       </div>
     </div>

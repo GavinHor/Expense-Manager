@@ -63,7 +63,7 @@
 
 
   .InitialPage .bottom .left{
-    margin-top: 7em;
+    margin-top: 6em;
     width: 50vw;
   }
 
@@ -105,8 +105,8 @@
     position: absolute;
     bottom: 0px;
     width: 100vw;
-    background-color: #561DE2;
-    color: white;
+    color: #561DE2;
+    background-color: white;
     text-align: center;
     height: 100px;
     font-size: 15px;
@@ -117,8 +117,8 @@
   .InitialPage footer p{
     display: flex;
     justify-content: center;
-    align-content: start;
-    column-gap: 10em;
+    align-content: center;
+    gap: 15em;
   }
 
 

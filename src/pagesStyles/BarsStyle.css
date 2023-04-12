@@ -5,7 +5,7 @@
 /* SIDE BAR -----------------------------------------------------*/
 
 .sidebar {
-    position: absolute;
+    position: fixed;
     left: -17em;
     width: 250px;
     height: 100vh;
@@ -51,7 +51,7 @@
   /* NAV BAR -----------------------------------------------------*/
 
 .Nav{
-    position: absolute;
+    position: fixed;
     background-color: #561DE2;
     width: 100vw;
     top: 0px;

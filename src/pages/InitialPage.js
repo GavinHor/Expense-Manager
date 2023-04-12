@@ -17,12 +17,12 @@ function InitialPage() {
     return (
     <div className="InitialPage">
         <div className='top'>
-            <Link to="/login"> <button onClick={handleClick}>Login</button> </Link> 
+            <Link to={{pathname:"/login"}}> <button onClick={handleClick}>Login</button> </Link> 
             <img src={logo} />
         </div>
         <div className='bottom'>   
           <div className='left'>
-            <Spline scene="https://prod.spline.design/QpLNNoN3zvhvuFAR/scene.splinecode" />
+          <Spline scene="https://prod.spline.design/QpLNNoN3zvhvuFAR/scene.splinecode" />
           </div> 
           <div className='right'>
             <h1 style={{alignSelf:'center'}}>CLAIM YOUR BUSINESS EXPENSES</h1>  

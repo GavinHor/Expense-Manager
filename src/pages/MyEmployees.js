@@ -1,22 +1,27 @@
 import { useState , useEffect} from 'react';
 import '../pagesStyles/PagesStyles.css';
 import { Link, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom'
 
 import SideBar from '../components/SideBar';
 import Nav from '../components/Nav';
 import ClaimBtn from '../components/ClaimBtn';
 
 import { employees } from '../data/employees';
+import { userDetails } from '../data/userDetails';
 
-function MyEmp(){
-    const name="Asia Belfiore"
-    const initials="AB"
-    const email="a.belfiore@FDM.uk"
+function MyEmp(props){
+    const { state } = useLocation();
+    const  manager= state.lm;
 
-    const listEmps = employees.map(employee =>
+    const name=userDetails.map(user=> user.name);
+    const initials=userDetails.map(user=> user.initials);
+    const email=userDetails.map(user=> user.email);
+    
+    const listEmps = employees.filter(employee => employee.lm==manager).map(employee =>
         <tr>
             <td style={{width: '70em'}}><ClaimBtn click="/ProcessClaim" one={employee.name} two={employee.id} three={employee.role} four={employee.score}/> </td>
-            <td style={{width: '10em'}}><Link to="/claims"><button  style={{width:'8em'}}className='button'> VIEW CLAIMS</button></Link> </td> 
+            <td style={{width: '10em'}}><Link to="/claims" state={{id: employee.id}}><button  style={{width:'8em'}}className='button'> VIEW CLAIMS</button></Link> </td> 
         </tr>);
 
     const navigate = useNavigate();
@@ -42,7 +47,7 @@ function MyEmp(){
                     <td>CLAIMS</td>
                     </tr>
                 </table>
-                <div class="list">
+                <div className="list">
                     <table> {listEmps} </table>
                 </div>
             </div>

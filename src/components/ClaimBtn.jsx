@@ -6,7 +6,7 @@ const ClaimBtn=(props)=>{
 
     return(
             <div className='claimBtn'> 
-                <Link to={props.click}> <button> 
+                <Link to={props.click} state={{claimId:props.state, id:props.empId}}> <button> 
                     <p>{props.one}</p>
                     <p>{props.two}</p>
                     <p>{props.three}</p>
