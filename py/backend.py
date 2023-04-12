@@ -100,8 +100,8 @@ def getClaimDetails():
 #get employee list. input manager ID. returns list of employees under manager and their details
 @app.route('/employeeslist',methods=["POST","GET"])
 def getEmployees():
-    if request.method=="POST":
-        lm = reg.getEmployee(request.form.get('id'))
+    if request.method=="GET":
+        lm = reg.getEmployee(int(request.args.get('id')))
         if lm.role=="Line Manager":
             #change to return json
             emplist = lm.getMyEmployees()
@@ -125,8 +125,8 @@ def getEmployees():
 #get claims list. input employee ID. returns all pending and past claims of employee
 @app.route('/getclaims',methods=["POST","GET"])
 def getClaims():
-    if request.method=="POST":
-        emp = reg.getEmployee(request.form.get('id'))
+    if request.method=="GET":
+        emp = reg.getEmployee(int(request.args.get('id')))
         claims = emp.getClaimList()
         claimlist=[]
         for claim in claims:
@@ -147,8 +147,8 @@ def getClaims():
 #get pending claims. input employee id. if role manager, return pending claims of employees. else, return personal pending claims
 @app.route('/pendingclaims',methods=["POST","GET"])
 def pendingClaims():
-    if request.method=="POST":
-        user=reg.getEmployee(request.form.get('id'))
+    if request.method=="GET":
+        user=reg.getEmployee(int(request.args.get('id')))
         if user.role=="Line Manager":
             claims=user.getEmployeeClaims()
         else:
@@ -172,8 +172,8 @@ def pendingClaims():
 #get employee info. input employee id, return employee info
 @app.route('/employeeinfo',methods=["POST","GET"])
 def getEmployeeInfo():
-    if request.method=="POST":
-        emp = reg.getEmployee(request.form.get('id'))
+    if request.method=="GET":
+        emp = reg.getEmployee(int(request.args.get('id')))
         return {
             'id':emp.id,
             'name':emp.name,
