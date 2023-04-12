@@ -51,7 +51,7 @@ export default function ProcessClaim(){
                       <td className="description">01/03/2023</td>
                     </tr>
                     <tr>
-                       <td className='viewAll'><Link to="/expenseClaimInfo"> <button onClick={handleClick} className="button">View All</button> </Link></td>
+                       <td className='viewAll'><Link to="/expenseClaimInfo?id=1"> <button onClick={handleClick} className="button">View All</button> </Link></td>
                     </tr>
                   </table>
                 </div>

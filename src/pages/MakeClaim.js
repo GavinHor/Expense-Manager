@@ -1,5 +1,5 @@
 import { useState , useEffect} from 'react';
-import { useNavigate , Link } from 'react-router-dom';
+import { useNavigate , useLocation , Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
 import '../pagesStyles/makeClaim.css';
@@ -31,6 +31,60 @@ function MakeClaim(){
       navigate('/target-route');
     }
 
+    // user id from prev page
+    var { state } = useLocation();
+    if (state === null) {
+        state = {id: 1}
+    }
+
+    // hides and shows fields
+    function handleType(e) {
+        const type = e.target.value;
+        const ex1 = document.getElementById("ex1");
+        const ex2 = document.getElementById("ex2");
+        const ex3 = document.getElementById("ex3");
+        const ex4 = document.getElementById("ex4");
+        const ex1label = document.getElementById("ex1-label");
+        const ex2label = document.getElementById("ex2-label");
+        const ex3label = document.getElementById("ex3-label");
+        const ex4label = document.getElementById("ex4-label");
+        if (type == "Travel Claim") {
+            ex1.style.display = "flex";
+            ex2.style.display = "flex";
+            ex3.style.display = "none";
+            ex4.style.display = "none";
+            ex1label.innerHTML = "Transportation Type:";
+            ex2label.innerHTML = "Motive:";
+        }
+        else if (type == "Overnight Stay Claim") {
+            ex1.style.display = "flex";
+            ex2.style.display = "flex";
+            ex3.style.display = "flex";
+            ex4.style.display = "none";
+            ex1label.innerHTML = "Structure Type:";
+            ex2label.innerHTML = "Structure Name:";
+            ex3label.innerHTML = "Checkout Date:";
+        }
+        else if (type == "Meal Claim") {
+            ex1.style.display = "flex";
+            ex2.style.display = "flex";
+            ex3.style.display = "flex";
+            ex1label.innerHTML = "Meal Type:"
+            ex2label.innerHTML = "Dining Location:"
+            ex3label.innerHTML = "Structure Type:"
+        }
+        else if (type == "Purchase Claim") {
+            ex1.style.display = "flex";
+            ex2.style.display = "flex";
+            ex3.style.display = "flex";
+            ex4.style.display = "flex";
+            ex1label.innerHTML = "Purchase Type:"
+            ex2label.innerHTML = "No. of Items:"
+            ex3label.innerHTML = "Store of Purchase:"
+            ex4label.innerHTML = "Items:"
+        }
+    }
+
     return (
         <div className='MakeClaim'>
             <span>
@@ -38,13 +92,15 @@ function MakeClaim(){
             </span>
             <Nav onClick={handleViewSidebar} initials={initials} name={name} email={email}/>
             <form className='middle' id="claimform" action='http://localhost:5000/submitClaim' method='POST'>
+                <input {...register("id")} type="hidden" value={state.id}></input>
+
                 <div className='left'>
                     <h1>Claim Form:</h1>
                         <table>
                             <tr>
                                 <td><label>Type:</label></td>
                                 <td>
-                                    <select {...register("type", {required: true})} className='description' defaultValue="Travel Claim">
+                                    <select {...register("type", {required: true})} onChange={handleType} className='description' defaultValue="Travel Claim">
                                             <option>Travel Claim</option>
                                             <option>Overnight Stay Claim</option>
                                             <option>Meal Claim</option>
@@ -79,15 +135,30 @@ function MakeClaim(){
                                 </td>
                             </tr>
                             <tr>
-                                <td><label>Motive:</label></td>
+                            </tr>
+                            <tr id="ex1">
+                                <td><label id="ex1-label">Transportation</label></td>
                                 <td>
-                                    <input {...register("motive", {required: true})} className='description' type='text'></input>
-                                    {errors.motive?.type === 'required' && (<p className='error'>Motive is required</p>)}
+                                    <input {...register("extra1")} className='description' type='text'></input>
                                 </td>
                             </tr>
-                            <tr>
-                                <td><label>Extra Details:</label></td>
-                                <td><textarea {...register("extra")} className='description'></textarea></td>
+                            <tr id="ex2">
+                                <td><label id="ex2-label">Motive</label></td>
+                                <td>
+                                    <input {...register("extra2")} className='description' type='text'></input>
+                                </td>
+                            </tr>
+                            <tr id="ex3" style={{display: "none"}}>
+                                <td><label id="ex3-label">a</label></td>
+                                <td>
+                                    <input {...register("extra3")} className='description' type='text'></input>
+                                </td>
+                            </tr>
+                            <tr id="ex4" style={{display: "none"}}>
+                                <td><label id="ex4-label">b</label></td>
+                                <td>
+                                    <textarea {...register("extra4")} className='description'></textarea>
+                                </td>
                             </tr>
                         </table>
                     </div>

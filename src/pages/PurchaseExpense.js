@@ -1,5 +1,6 @@
 import React from 'react';
-import { useState} from 'react';
+import { useState , useEffect } from 'react';
+import { useParams } from "react-router-dom";
 
 import '../pagesStyles/expenseStyles.css';
 import claimPf from "../images/IMG_2397.jpg"
@@ -12,11 +13,38 @@ export default function PurchaseExpense(){
     const name="Asia Belfiore"
     const initials="AB"
     const email="a.belfiore@FDM.uk"
+    const { claimId } = useParams();
 
     const [sidebarOpen, setSideBarOpen] = useState(false);
     const handleViewSidebar = () => {
       setSideBarOpen(!sidebarOpen);
     }
+
+    const [claim, setClaim] = useState([]);
+
+    /*async function fetchClaim() {
+      const response = await fetch("http:..localhost:5000/claimdetails")
+      if (!response.ok) {
+        throw new Error("Network response not OK");
+      }
+      const jsonData = await response.json();
+      console.log(jsonData);
+      return jsonData;
+    }*/
+
+    useEffect(() => {
+        // Fetch claim data from the backend
+        fetch('http://localhost:5000/claimdetails?claimid='+claimId, {
+          method: "POST",
+          mode: "cors"
+        })
+        .then(response => response.json())
+        .then(data => setClaim(data));
+    }, []);
+
+    console.log(claimId);
+    console.log(claim);
+
     return(
         <div className="PurchaseExpense">
              <span>
