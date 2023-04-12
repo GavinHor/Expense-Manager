@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState , useEffect } from 'react';
-import { useParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
 import '../pagesStyles/expenseStyles.css';
 import claimPf from "../images/IMG_2397.jpg"
@@ -13,7 +13,7 @@ export default function PurchaseExpense(){
     const name="Asia Belfiore"
     const initials="AB"
     const email="a.belfiore@FDM.uk"
-    const { claimId } = useParams();
+    const searchParams = new URLSearchParams(document.location.search);
 
     const [sidebarOpen, setSideBarOpen] = useState(false);
     const handleViewSidebar = () => {
@@ -22,27 +22,17 @@ export default function PurchaseExpense(){
 
     const [claim, setClaim] = useState([]);
 
-    /*async function fetchClaim() {
-      const response = await fetch("http:..localhost:5000/claimdetails")
-      if (!response.ok) {
-        throw new Error("Network response not OK");
-      }
-      const jsonData = await response.json();
-      console.log(jsonData);
-      return jsonData;
-    }*/
-
     useEffect(() => {
         // Fetch claim data from the backend
-        fetch('http://localhost:5000/claimdetails?claimid='+claimId, {
-          method: "POST",
+        fetch('http://localhost:5000/claimdetails?claimid='+searchParams.get('id'), {
+          method: "GET",
           mode: "cors"
         })
         .then(response => response.json())
         .then(data => setClaim(data));
     }, []);
 
-    console.log(claimId);
+    console.log(searchParams.get('id'));
     console.log(claim);
 
     return(
@@ -54,8 +44,54 @@ export default function PurchaseExpense(){
             <div className='middle'>
               <div className='left'>
                 <h1>Claim Details:</h1>
-                <table>
-                  <tr>
+                  <table>
+                    <tr>
+                      <td>Type:</td>
+                      <td>{claim.type}</td>
+                    </tr>
+                    <tr>
+                      <td>Id:</td>
+                      <td>{claim.id}</td>
+                    </tr>
+                    <tr>
+                      <td>Amount:</td>
+                      <td>{claim.amount}</td>
+                    </tr>
+                    <tr>
+                      <td>Submission:</td>
+                      <td>{claim.submitdate}</td>
+                    </tr>
+                    <tr>
+                      <td>Expense Date:</td>
+                      <td>{claim.expensedate}</td>
+                    </tr>
+                    <tr>
+                      <td>Employee:</td>
+                      <td>{claim.employee}</td>
+                    </tr>
+                    <tr>
+                      <td>Status:</td>
+                      <td>{claim.status}</td>
+                    </tr>
+
+                    <tr id='extra1'>
+                      <td id='extra1-label'></td>
+                      <td></td>
+                    </tr>
+                    <tr id='extra2'>
+                      <td id='extra2-label'></td>
+                      <td></td>
+                    </tr>
+                    <tr id='extra3'>
+                      <td id='extra3-label'></td>
+                      <td></td>
+                    </tr>
+                    <tr id='extra4'>
+                      <td id='extra4-label'></td>
+                      <td></td>
+                    </tr>
+                  </table>
+                  {/*<tr>
                     <td>Type:</td>
                     <td className="description" > Travel Claim</td>
                   </tr>
@@ -77,7 +113,7 @@ export default function PurchaseExpense(){
                   </tr>
                   <tr>
                     <td>Employee:</td>
-                    <td className="description" >{name}</td>
+                    <td className="description" >{}</td>
                   </tr>
                   <tr>
                     <td>Status:</td>
@@ -94,8 +130,7 @@ export default function PurchaseExpense(){
                   <tr>
                     <td>Extra Details:</td>
                     <td className="description">N/A</td>
-                  </tr>
-                </table>
+                  </tr>*/}
                 <button className="indietro" onClick={alert}> <img style={{width:'30px'}} src={logo} alt="indietro"/> </button>
               </div>
               <div className='right'>

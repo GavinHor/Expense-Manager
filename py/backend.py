@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import request, redirect
+from flask import request, redirect, jsonify
 from flask_cors import CORS, cross_origin
 import datetime
 from classes import *
@@ -42,15 +42,15 @@ TODO:
 #submit claims end point
 @app.route('/submitClaim',methods=["POST","GET"])
 def submitClaim():
-    id = int(request.form.get('id'))
+    id = request.form.get('id')
     if request.method=="POST":
         print("ID = " + id)
         if id == -1:
             print("aborting submitClaim...")
             return "Internal Server Error: Employee ID not valid"
-        emp = reg.getEmployee(id)
+        emp = reg.getEmployee(int(id))
         emp.makeExpenseClaim(request.form.get('proof'), request.form.get('expensedate'), int(request.form.get('amount')), request.form.get('currency'), [request.form.get('type'), request.form.get('extra1'), request.form.get('extra2'), request.form.get('extra3'), request.form.get('extra4')])
-        return redirect("http://localhost:3000/expenseClaimInfo?id="+str(id))
+        return redirect("http://localhost:3000/expenseClaimInfo?id="+id)
 
 @app.route('/approveClaim',methods=["POST","GET"])
 def approveClaim():
@@ -89,10 +89,11 @@ def login():
 #get claim details, input claim ID . returns claim details 
 @app.route('/claimdetails',methods=["POST","GET"])
 def getClaimDetails():
-    if request.method=="POST":
+    if request.method=="GET":
         #change to return JSON
-        claim = reg.getExpenseClaim(int(request.form.get('id')))
-        response = claim.getClaimDetails()
+        print("ID = " + request.args.get('claimid'))
+        claim = reg.getExpenseClaim(int(request.args.get('claimid'))-1)
+        response = jsonify(claim.getClaimDetails())
         response.headers.add('Access-Control-Allow-Origin', '*');
         return response
     

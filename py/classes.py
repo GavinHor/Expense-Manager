@@ -499,7 +499,7 @@ Status: {self.status}
                 'proof':self.proof,
                 'submitdate':self.submitdate,
                 'expensedate':self.expensedate,
-                'employee':self.employee}
+                'employee':self.employee.getPersonalDetails()['location']}
 
 class ExpenseProof:
     def __init__(self,id,image,vat) -> None:
