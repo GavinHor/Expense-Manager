@@ -21,6 +21,57 @@ reg = populate()
 app = Flask(__name__)
 CORS(app)
 
+"""
+So far:
+login
+get claim details
+get employees list
+get all personal claims
+get all pending claims of employees/self
+get employee info
+submit claims endpoint
+report claim endpoint
+approve claim
+manage employee allowance
+change personal details (password, location, etc.)?
+
+TODO:
+"""
+
+#submit claims end point
+@app.route('/submitClaim',methods=["POST","GET"])
+def submitClaim():
+    if request.method=="POST":
+        emp = reg.getEmployee(request.id)
+        emp.makeExpenseClaim(request.proof, request.expensedate, request.amount, request.currency, request.extraDetails)
+        return
+
+@app.route('/approveClaim',methods=["POST","GET"])
+def approveClaim():
+    if request.method=="POST":
+        lm = reg.getEmployee(request.managerid)
+        lm.approveClaim(reg.getExpenseClaim(request.claimid))
+        return
+
+
+@app.route('/reportClaim',methods=["POST","GET"])
+def reportClaim():
+    if request.method=="POST":
+        lm = reg.getEmployee(request.managerid)
+        lm.reportClaim(reg.getExpenseClaim(request.claimid))
+        return
+
+@app.route('/changeAllowance',methods=["POST","GET"])
+def changeAllowance():
+    if request.method=="POST":
+        lm = reg.getEmployee(request.managerid)
+        emp = reg.getEmployee(request.employeeid)
+        if emp in lm.getMyEmployees():
+          emp.changeAllowance(request.maxallowance)
+        else:
+            print("Error: employee is not under this manager")
+            return
+      
 #login. input email and password. returns id if successful, -1 if unsuccessful
 @app.route('/login',methods=["POST","GET"])
 def login():
@@ -35,17 +86,7 @@ def getClaimDetails():
     if request.method=="POST":
         #change to return JSON
         claim = reg.getExpenseClaim(request.id)
-        return {
-            'id':claim.id,
-            'employeeid':claim.employee.id,
-            'submitdate':claim.submitdate,
-            'status':claim.status,
-            'amount':claim.amount,
-            'currency':claim.currency,
-            'proofid':claim.proof.id,
-            'expensedate':claim.expensedate,
-            'managerid':claim.manager.id
-        }
+        return claim.getClaimDetails()
     
 #get employee list. input manager ID. returns list of employees under manager and their details
 @app.route('/employeeslist',methods=["POST","GET"])
@@ -137,6 +178,32 @@ def getEmployeeInfo():
             'gender':emp.personalDetails['gender'],
             'breakfast':emp.personalDetails['breakfast']
         }
+
+@app.route('/changeDetails',methods=["POST","GET"])
+def changeDetails():
+    emp=reg.getEmployee(request.id)
+    details=request.details
+    fields=details.keys()
+    if 'location' in fields:
+        emp.changeLocation(details['location'])
+        details.pop('location')
+        fields.remove('location')
+    if 'currency' in fields:
+        emp.changeCurrency(details['currency'])
+        details.pop('currency')
+        fields.remove('currency')
+    if 'password' in fields:
+        emp.password=details['password']
+        details.pop('password')
+        fields.remove('password')
+    if 'fname' in fields:
+        emp.name=details['fname']+details['lname']
+    
+
+    for field in fields:
+        emp.personalDetails[field]=details[field]
+
+    return
 
 #test call, to deleter
 @app.route('/data')
