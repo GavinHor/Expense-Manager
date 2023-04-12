@@ -209,8 +209,6 @@ class Admin:
         else:
             return False
 
-    #these two functions require modifying registry, if direct modification isn't considered safe
-    #then add functions to registry, with or without required admin verification
     def addEmployee(self,email,fname,lname,pw, role,personaldetails):
         lmid=[]
         empnum=[]
@@ -240,6 +238,7 @@ class Admin:
             print("AdminError: valid role not selected")
             return
 
+    #incomplete, add removing all claims of employee, or change emp to TERMINATED placeholder
     def removeEmployee(self,emp):
         emp.getManager().removeEmployee(emp)
         self.registry.removeEmployee(emp.id)
