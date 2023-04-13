@@ -1,38 +1,38 @@
-import '/Users/asiabelfiore/Desktop/fdm/src/images/mealOne.jpg'
-import'/Users/asiabelfiore/Desktop/fdm/src/images/IMG_2397.jpg'
-import '/Users/asiabelfiore/Desktop/fdm/src/images/mealTwo.jpg'
-import '/Users/asiabelfiore/Desktop/fdm/src/images/mealThree.jpeg'
-import '/Users/asiabelfiore/Desktop/fdm/src/images/purchaseOne.png'
-import '/Users/asiabelfiore/Desktop/fdm/src/images/purchaseTwo.png'
-import '/Users/asiabelfiore/Desktop/fdm/src/images/receipt.png'
-import '/Users/asiabelfiore/Desktop/fdm/src/images/travelThree.jpeg'
-import '/Users/asiabelfiore/Desktop/fdm/src/images/travelTwo.jpeg'
+import './/mealOne.jpg'
+import './IMG_2397.jpg'
+import './/mealTwo.jpg'
+import './/mealThree.jpeg'
+import './/purchaseOne.png'
+import './/purchaseTwo.png'
+import './/receipt.png'
+import './/travelThree.jpeg'
+import './/travelTwo.jpeg'
 
 export const imageArray=[{
-    key:'1',
-    path: '/Users/asiabelfiore/Desktop/fdm/src/images/mealOne.jpg'
+    key:'TC865AB',
+    path: './/mealOne.jpg'
 },{
     key:'2',
-    path: '/Users/asiabelfiore/Desktop/fdm/src/images/IMG_2397.jpg'
+    path: './/IMG_2397.jpg'
 },{
     key:'3',
-    path: '/Users/asiabelfiore/Desktop/fdm/src/images/mealTwo.jpg'
+    path: './/mealTwo.jpg'
 },{
     key:'4',
-    path: '/Users/asiabelfiore/Desktop/fdm/src/images/mealThree.jpeg'
+    path: './/mealThree.jpeg'
 },{
     key:'5',
-    path: '/Users/asiabelfiore/Desktop/fdm/src/images/purchaseOne.png'
+    path: './/purchaseOne.png'
 },{
     key:'6',
-    path: '/Users/asiabelfiore/Desktop/fdm/src/images/purchaseTwo.png'
+    path: './/purchaseTwo.png'
 },{
     key:'7',
-    path: '/Users/asiabelfiore/Desktop/fdm/src/images/receipt.png'
+    path: './/receipt.png'
 },{
-    key:'8',
-    path: '/Users/asiabelfiore/Desktop/fdm/src/images/travelThree.jpeg'
+    key:'TC000AB',
+    path: './/travelThree.jpeg'
 },{
-    key:'1',
-    path: '/Users/asiabelfiore/Desktop/fdm/src/images/travelTwo.jpeg'
+    key:'9',
+    path: './/travelTwo.jpeg'
 },]
