@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import request, redirect, jsonify
+from flask import request
 from flask_cors import CORS, cross_origin
 import datetime
 from classes import *
@@ -15,7 +15,6 @@ def populate() -> Registry:
   admin.addEmployee('empemail@email.com','internal','staff','password,',"Internal Staff",{'location':'Ohio','age':'unknown','gender':'yes','breakfast':'no'})
   lm = reg.getEmployee(0)
   lm.addEmployee(reg.getEmployee(1))
-  reg.addClaim(ExpenseClaim(0, reg.getEmployee(1), 12, "£ - GBP", "temp", reg.getEmployee(0), "3"))
   return reg
 
 reg = populate()
@@ -42,38 +41,33 @@ TODO:
 #submit claims end point
 @app.route('/submitClaim',methods=["POST","GET"])
 def submitClaim():
-    id = request.form.get('id')
     if request.method=="POST":
-        print("ID = " + id)
-        if id == -1:
-            print("aborting submitClaim...")
-            return "Internal Server Error: Employee ID not valid"
-        emp = reg.getEmployee(int(id))
-        emp.makeExpenseClaim(request.form.get('proof'), request.form.get('expensedate'), int(request.form.get('amount')), request.form.get('currency'), [request.form.get('type'), request.form.get('extra1'), request.form.get('extra2'), request.form.get('extra3'), request.form.get('extra4')])
-        return redirect("http://localhost:3000/expenseClaimInfo?id="+id)
+        emp = reg.getEmployee(request.id)
+        emp.makeExpenseClaim(request.proof, request.expensedate, request.amount, request.currency, request.extraDetails)
+        return
 
 @app.route('/approveClaim',methods=["POST","GET"])
 def approveClaim():
     if request.method=="POST":
-        lm = reg.getEmployee(request.form.get('managerid'))
-        lm.approveClaim(reg.getExpenseClaim(request.form.get('claimid')))
+        lm = reg.getEmployee(request.managerid)
+        lm.approveClaim(reg.getExpenseClaim(request.claimid))
         return
 
 
 @app.route('/reportClaim',methods=["POST","GET"])
 def reportClaim():
     if request.method=="POST":
-        lm = reg.getEmployee(request.form.get('managerid'))
-        lm.reportClaim(reg.getExpenseClaim(request.form.get('claimid')))
+        lm = reg.getEmployee(request.managerid)
+        lm.reportClaim(reg.getExpenseClaim(request.claimid))
         return
 
 @app.route('/changeAllowance',methods=["POST","GET"])
 def changeAllowance():
     if request.method=="POST":
-        lm = reg.getEmployee(request.form.get('managerid'))
-        emp = reg.getEmployee(request.form.get('employeeid'))
+        lm = reg.getEmployee(request.managerid)
+        emp = reg.getEmployee(request.employeeid)
         if emp in lm.getMyEmployees():
-          emp.changeAllowance(request.form.get('maxallowance'))
+          emp.changeAllowance(request.maxallowance)
         else:
             print("Error: employee is not under this manager")
             return
@@ -83,25 +77,22 @@ def changeAllowance():
 def login():
     id = -1
     if request.method=="POST":
-        id = reg.tryLoginEmp(request.form.get('email'),request.form.get('password'))
+        id = reg.tryLoginEmp(request.email,request.password)
         return {'id':id}
 
 #get claim details, input claim ID . returns claim details 
 @app.route('/claimdetails',methods=["POST","GET"])
 def getClaimDetails():
-    if request.method=="GET":
+    if request.method=="POST":
         #change to return JSON
-        print("ID = " + request.args.get('claimid'))
-        claim = reg.getExpenseClaim(int(request.args.get('claimid'))-1)
-        response = jsonify(claim.getClaimDetails())
-        response.headers.add('Access-Control-Allow-Origin', '*');
-        return response
+        claim = reg.getExpenseClaim(request.id)
+        return claim.getClaimDetails()
     
 #get employee list. input manager ID. returns list of employees under manager and their details
 @app.route('/employeeslist',methods=["POST","GET"])
 def getEmployees():
-    if request.method=="GET":
-        lm = reg.getEmployee(int(request.args.get('id')))
+    if request.method=="POST":
+        lm = reg.getEmployee(request.id)
         if lm.role=="Line Manager":
             #change to return json
             emplist = lm.getMyEmployees()
@@ -125,8 +116,8 @@ def getEmployees():
 #get claims list. input employee ID. returns all pending and past claims of employee
 @app.route('/getclaims',methods=["POST","GET"])
 def getClaims():
-    if request.method=="GET":
-        emp = reg.getEmployee(int(request.args.get('id')))
+    if request.method=="POST":
+        emp = reg.getEmployee(request.id)
         claims = emp.getClaimList()
         claimlist=[]
         for claim in claims:
@@ -147,8 +138,8 @@ def getClaims():
 #get pending claims. input employee id. if role manager, return pending claims of employees. else, return personal pending claims
 @app.route('/pendingclaims',methods=["POST","GET"])
 def pendingClaims():
-    if request.method=="GET":
-        user=reg.getEmployee(int(request.args.get('id')))
+    if request.method=="POST":
+        user=reg.getEmployee(request.id)
         if user.role=="Line Manager":
             claims=user.getEmployeeClaims()
         else:
@@ -172,8 +163,8 @@ def pendingClaims():
 #get employee info. input employee id, return employee info
 @app.route('/employeeinfo',methods=["POST","GET"])
 def getEmployeeInfo():
-    if request.method=="GET":
-        emp = reg.getEmployee(int(request.args.get('id')))
+    if request.method=="POST":
+        emp = reg.getEmployee(request.id)
         return {
             'id':emp.id,
             'name':emp.name,
@@ -190,8 +181,8 @@ def getEmployeeInfo():
 
 @app.route('/changeDetails',methods=["POST","GET"])
 def changeDetails():
-    emp=reg.getEmployee(request.form.get('id'))
-    details=request.form.get('details')
+    emp=reg.getEmployee(request.id)
+    details=request.details
     fields=details.keys()
     if 'location' in fields:
         emp.changeLocation(details['location'])
