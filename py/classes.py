@@ -214,8 +214,8 @@ class Admin:
         empnum=[]
 
         for lm in self.registry.managers:
-            lmid.append(lm.id)
-            empnum.append(len(lm.employeeList))
+            lmid.append(self.registry.getEmployee(lm).id)
+            empnum.append(len(self.registry.getEmployee(lm).employeeList))
         personaldetails['fname']=fname
         personaldetails['lname']=lname
         id = self.registry.generateEmployeeID()
@@ -232,7 +232,7 @@ class Admin:
             self.registry.getEmployee(manager).addEmployee(emp)
         elif role=="Line Manager":
             #who manages the line manager? solve
-            emp = LineManager(id,email,pw,"Line Manager",None,self.registry,personaldetails,{})
+            emp = LineManager(id,email,pw,"Line Manager",None,self.registry,personaldetails,[])
             self.registry.addEmployee(emp)
             self.registry.addLineManager(emp)
         else:
@@ -280,13 +280,13 @@ class Employee:
 
         id=self.reg.generateExpenseID()
         
-        if extraDetails[0]=="Overnight":
+        if extraDetails[0]=="Overnight Stay Claim":
             claim=OvernightStayExpense(id, self, amount, currency, proof, self.manager, expdate, extraDetails[1], extraDetails[2], extraDetails[3])
-        elif extraDetails[0]=="Meal":
+        elif extraDetails[0]=="Meal Claim":
             claim=MealExpense(id, self, amount, currency, proof, self.manager, expdate, extraDetails[1], extraDetails[2], extraDetails[3])
-        elif extraDetails[0]=="Purchase":
+        elif extraDetails[0]=="Purchase Claim":
             claim=PurchaseExpense(id, self, amount, currency, proof, self.manager, expdate, extraDetails[1], extraDetails[2], extraDetails[3], extraDetails[4])
-        elif extraDetails[0]=="Travel":
+        elif extraDetails[0]=="Travel Claim":
             claim=TravelExpense(id, self, amount, currency, proof, self.manager, expdate, extraDetails[1], extraDetails[2])
         self.updateAllowance(amount)
         self.reg.addClaim(claim)
@@ -452,8 +452,10 @@ Details: {self.details}
         return self.reason
 
 class ExpenseClaim:
+    newId = 1
+
     def __init__(self, id, employee, amount, currency, proof, manager, expdate) -> None:
-        self.id=id
+        self.id = self.newId
         self.employee=employee
         self.submitdate=datetime.date.today()
         self.status="Pending"
@@ -462,6 +464,7 @@ class ExpenseClaim:
         self.proof=proof
         self.expensedate=expdate
         self.manager=manager
+        self.newId += 1  # ID number goes up for each new claim
 
     def __str__(self) -> str:
         return f"""ID: {self.id}
@@ -496,7 +499,7 @@ Status: {self.status}
                 'proof':self.proof,
                 'submitdate':self.submitdate,
                 'expensedate':self.expensedate,
-                'employee':self.employee}
+                'employee':self.employee.getPersonalDetails()['location']}
 
 class ExpenseProof:
     def __init__(self,id,image,vat) -> None:
@@ -541,7 +544,7 @@ class MealExpense(ExpenseClaim):
         details['structuretype']=self.stype
         return details
 class PurchaseExpense(ExpenseClaim):
-    def __init__(self, id, employee, amount, currency, proof, manager, expdate, ptype, itemno, items, store) -> None:
+    def __init__(self, id, employee, amount, currency, proof, manager, expdate, ptype, itemno, store, items) -> None:
         super().__init__(id, employee, amount, currency, proof, manager, expdate)
         self.ptype=ptype
         self.itemno=itemno
