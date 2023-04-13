@@ -3,7 +3,7 @@
 }
 
 /* All buttons hover animation */
-button:hover {
+.App button:hover{
   box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
   cursor: pointer;
 }
@@ -60,30 +60,3 @@ button:hover {
 }
 
 /* ProcessCLaim -----------------------------------------------------*/
-
-.ProcessClaim{
-  /* overriding style!.css */
-  background-color: rgb(255, 255, 255);
-}
-
-.ProcessClaim form {
-  align-content: center;
-}
-
-.ProcessClaim .bubble {
-  background-color: rgb(255, 255, 255);
-  border-width: 1px;
-  border-radius: 5%;
-}
-
-.ProcessClaim .left {
-  color: rgb(115, 0, 209);
-  float: left;
-}
-
-.ProcessClaim #card {
-  background-color: rgb(115, 0, 209);
-  border-radius: 1%;
-  padding: 5em;
-}
-

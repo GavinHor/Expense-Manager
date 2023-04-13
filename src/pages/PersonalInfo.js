@@ -7,18 +7,19 @@ import '../pagesStyles/MyDetails.css';
 
 import SideBar from '../components/SideBar';
 import Nav from '../components/Nav';
+import ClaimBtn from '../components/ClaimBtn';
 
-import { userDetails, myEmps } from '../data/userDetails';
+import { userDetails, myEmps , myClaims} from '../data/userDetails';
 
 
 function PersonalInfo (){
     const { state } = useLocation();
-    const  userId= state.lm;
+    // state.id;
+    const  userId='1';
     const name=userDetails.filter(user=> user.id==userId).map(user=> user.name);
     const initials=userDetails.filter(user=> user.id==userId).map(user=> user.initials);
     const email=userDetails.filter(user=> user.id==userId).map(user=> user.email);
-
-    
+    const role=userDetails.filter(user=> user.id==userId).map(user=> user.role);
 
     const [sidebarOpen, setSideBarOpen] = useState(false);
     const handleViewSidebar = () => {
@@ -57,13 +58,25 @@ function PersonalInfo (){
             </tr>
         </table>);
 
+        var listClaims={};
 
-    const listEmps = myEmps.map(emp =>
+        if(role!="Line Manager"){
+        listClaims = myClaims.map(claim =>
+            <tr>
+                <td>{claim.type}</td>
+                <td>{claim.amount}</td>
+                <td>{claim.status}</td>
+                <td><Link to="/expenseClaimInfo" state={{claimID: claim.id ,id:userId}}> <input className="button" type="button" value="INFO" />  </Link></td>
+            </tr>);
+        }
+        else{ 
+        listClaims = myEmps.map(emp =>
             <tr>
                 <td>{emp.name}</td>
                 <td><Link to={{pathname:"/claims"}}> <input className="button" type="button" value="INFO" />  </Link></td>
             </tr>
             );
+}
     
     const consChange=userDetails.filter(user=> user.role=="Consultant").map(user=> 
         <Link to={{pathname:"/ChangeInfo"}}><button> LOCATION / CURRENCY </button></Link>
@@ -78,13 +91,13 @@ function PersonalInfo (){
                 <Nav onClick={handleViewSidebar} initials={initials} name={name} email={email}/>
                 <header className="header">
                     <div className='left'>
-                        <h4>My details</h4>
+                        <h4>Personal details:</h4>
                         {listInfo}
                     </div >
                     <div className='right' style={{marginBottom: '1em'}}>
-                        <h4>My </h4>
+                        <h4>Other info:</h4>
                         <table>
-                            {listEmps}
+                            {listClaims}
                         </table>
                     </div>
                 </header>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState} from 'react';
-import { useLocation , Link } from 'react-router-dom';
+import { useLocation , Link, useNavigate } from 'react-router-dom';
 
 import '../pagesStyles/processClaim.css';
 import claimProof from "../images/IMG_2397.jpg"
@@ -18,17 +18,24 @@ export default function ProcessClaim(){
     const email=userDetails.map(user=> user.email);
 
     const { state } = useLocation();
-    const claimID = state.claimId;
-    const data = state.id;
+    const claimId = state.claimID;
+    const data = state.id ;
 
-    const claimEmp=claims.filter(claim=> claim.id==claimID).map(claim=>claim.employee);
+    const claimEmp=claims.filter(claim=> claim.id==claimId).map(claim=>claim.employee);
 
     const [sidebarOpen, setSideBarOpen] = useState(false);
     const handleViewSidebar = () => {
       setSideBarOpen(!sidebarOpen);
     }
+    
+    const navigate=useNavigate();
+    function handleClick(event) {
+      event.preventDefault(); 
+      alert("Claim Successfully approved");
+      navigate('/home', { state: { id: data } });
+  }
 
-    const claimDets = claims.filter(claim => claim.id==claimID).map(claim =>
+    const claimDets = claims.filter(claim => claim.id==claimId).map(claim =>
                   <table className='claimDetails'>
                     <tr>
                       <td>Type:</td>
@@ -51,11 +58,11 @@ export default function ProcessClaim(){
                       <td className="description">{claim.status}</td>
                     </tr>
                     <tr>
-                       <td className='viewAll'><Link to={{pathname:"/expenseClaimInfo"}}> <button className="button">View All</button> </Link></td>
+                       <td className='viewAll'><Link to="/expenseClaimInfo" state={{claimID:claimId, id:data}}> <button className="button">View All</button> </Link></td>
                     </tr>
                   </table>);
 
-    const claimPf = claims.filter(claim => claim.id==claimID).map(claim =>
+    const claimPf = claims.filter(claim => claim.id==claimId).map(claim =>
       <div className='expProof'>
                       <img src={claimProof}/>
                       <table>
@@ -109,9 +116,9 @@ export default function ProcessClaim(){
               </div>
             </div>
             <nav className="nav">
-              <Link to={{pathname:'/home' , state: '1' }}><button> APPROVE </button></Link>
-              <Link to={{pathname:"/ReportClaim"}}><button> REPORT </button></Link>
-            </nav>
+              <Link to='/home' state={{ id:data }}><button onClick={handleClick}> APPROVE </button></Link>
+              <Link to="/ReportClaim" state={{claimID:claimId, id:data}}><button> REPORT </button></Link>
+            </nav> 
         </div>
     )
 }

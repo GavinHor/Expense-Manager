@@ -12,6 +12,7 @@ import MakeClaim from './pages/MakeClaim';
 import ProcessClaims from './pages/ProcessClaim';
 import ChangePassword from './components/ChangeInfo';
 import ChangeLocation from './components/changeLocation';
+import ReportClaim from './pages/ReportClaim';
 
 export default function App() {
   return (
@@ -26,6 +27,7 @@ export default function App() {
         <Route path="/changePassword" element={<ChangePassword />} />
         <Route path="/ChangeInfo" element={<ChangeLocation />} />
         <Route path="/ProcessClaim" element={<ProcessClaims />} />
+        <Route path="/ReportClaim" element={<ReportClaim />} />
         <Route path="/expenseClaimInfo" element={<ExpensesClaims />} />
         <Route path="/makeClaim" element={<MakeClaim />} />
 

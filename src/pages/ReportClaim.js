@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState} from 'react';
-import { useNavigate , Link } from 'react-router-dom';
+import { useNavigate , Link , useLocation} from 'react-router-dom';
 import '../pagesStyles/reportClaim.css';
 
 import SideBar from '../components/SideBar';
@@ -8,34 +8,42 @@ import Nav from '../components/Nav';
 
 import { userDetails } from '../data/userDetails';
 import { claims } from '../data/claims';
+import { employees } from '../data/employees';
 
 
 export default function ReportClaim (){
-    const name=userDetails.map(user=> user.name);
-    const initials=userDetails.map(user=> user.initials);
-    const email=userDetails.map(user=> user.email);
+    const { state } = useLocation();
+    const claimID = state.claimID;
+     const data = state.id;
+    //const data = '1';
 
-    const listClaims = claims.filter(claim => claim.id=='TC001AB').map(claim =>
+    const name=userDetails.filter(user=> user.id==data).map(user=> user.name);
+    const initials=userDetails.filter(user=> user.id==data).map(user=> user.initials);
+    const email=userDetails.filter(user=> user.id==data).map(user=> user.email);
+
+    const claimEmp=claims.filter(claim=> claim.id==claimID).map(claim=>claim.employee);
+
+    const listClaims = claims.filter(claim => claim.id==claimID).map(claim =>
         <table>
             <tr>
                 <td><span>Type:</span></td>
-                <td className='desc'>{claim.type}</td>
+                <td className="description" > {claim.type}</td>
             </tr>
             <tr>
                 <td><span>Amount:</span></td>
-                <td className='desc'>{claim.amount}</td>
+                <td className="description" > {claim.amount}</td>
             </tr>
             <tr>
                 <td><span>Expense date:</span></td>
-                <td className='desc'>{claim.expDate}</td>
+                    <td className="description" > {claim.expDate}</td>
             </tr>
             <tr>
-                <td><span>Location:</span></td>
-                <td className='desc'>London, UK<span> to </span>Rome, IT</td>
+                <td><span>Employee:</span></td>
+                    <td className="description" > {claim.employee}</td>
             </tr>
             <tr>
                 <td><span>Transportation:</span></td>
-                <td className='desc'>flight FR1006</td>
+                    <td className="description" > {claim.id}</td>
             </tr>
         </table>);
 
@@ -72,19 +80,19 @@ export default function ReportClaim (){
                     <table>
                         <tr>
                             <td><span>Name:</span></td>
-                            <td  className='desc'>{name}</td>
+                            <td  className='desc'>{employees.filter(employee => employee.name==claimEmp).map(employee =>employee.name)}</td>
                         </tr>
                         <tr>
                             <td><span>Role:</span></td>
-                            <td className='desc'>{userDetails.map(user=> user.role)}</td>
+                            <td className='desc'>{employees.filter(employee => employee.name==claimEmp).map(employee =>employee.role)}</td>
                         </tr>
                         <tr>
                             <td><span>Email:</span></td>
-                            <td className='desc'>{email}</td>
+                            <td className='desc'>{employees.filter(employee => employee.name==claimEmp).map(employee =>employee.email)}</td>
                         </tr>
                         <tr>
                             <td><span>Reliability Score:</span></td>
-                            <td className='desc'>{userDetails.map(user=> user.score)}</td>
+                            <td className='desc'>{employees.filter(employee => employee.name==claimEmp).map(employee =>employee.score)}</td>
                         </tr>
                     </table>
                     </div>
@@ -94,7 +102,7 @@ export default function ReportClaim (){
                 <div className="btns">
                     <button onClick={handleClick}>REPORT FRAUD SUSPICION</button>
                     <button onClick={handleClick}>REPORT INCORRECT INFORMATION</button>   
-                    <Link to={{pathname:"/ProcessClaim"}}><button> CANCEL </button></Link> 
+                    <Link to="/home" state={{id:data}}><button> CANCEL </button></Link> 
                 </div>
                 <div className="expl">
                     <h2>Report Reason and Further Explanation: </h2>

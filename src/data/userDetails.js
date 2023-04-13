@@ -84,7 +84,5 @@ import { claims } from "./claims";
     spent: '£ 627.44',
     score: '91%',
     currency: '£ - GBP',
-    myClaims: myClaims, 
-    employees: myEmps,
-    hpClaims: claims
+    
 }];

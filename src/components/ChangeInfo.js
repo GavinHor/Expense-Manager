@@ -11,6 +11,7 @@ import { userDetails } from '../data/userDetails';
 
 export default function ChangeInfo(){
     const name=userDetails.map(user=> user.name);
+    const id=userDetails.map(user=> user.id);
     const initials=userDetails.map(user=> user.initials);
     const email=userDetails.map(user=> user.email);
     const oldPw=userDetails.map(user=> user.password);
@@ -68,7 +69,7 @@ export default function ChangeInfo(){
             </div>
             <nav className="nav">
                  <button onClick={handleClick}>CONFIRM</button> 
-                 <Link to={{pathname:'/myDetails'}}><button> CANCEL </button> </Link>
+                 <Link to='/myDetails' state={{id: {id}}}><button> CANCEL </button> </Link>
             </nav>
         </div>
 
