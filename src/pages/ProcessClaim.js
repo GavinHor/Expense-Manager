@@ -3,7 +3,6 @@ import { useState} from 'react';
 import { useLocation , Link, useNavigate } from 'react-router-dom';
 
 import '../pagesStyles/processClaim.css';
-import claimProof from "../images/IMG_2397.jpg"
 
 import SideBar from '../components/SideBar';
 import Nav from '../components/Nav';
@@ -32,6 +31,8 @@ export default function ProcessClaim(){
     function handleClick(event) {
       event.preventDefault(); 
       alert("Claim Successfully approved");
+      const ind = claims.findIndex((claim => claim.id == claimId));
+      claims[ind].status="APPROVED";
       navigate('/home', { state: { id: data } });
   }
 
@@ -64,7 +65,7 @@ export default function ProcessClaim(){
 
     const claimPf = claims.filter(claim => claim.id==claimId).map(claim =>
       <div className='expProof'>
-                      <img src={claimProof}/>
+                      <img src={claims.filter(claim=> claim.id==claimId).map(claim=> claim.proof)}/>
                       <table>
                         <tr className='vat'>
                           <td>VAT:</td>

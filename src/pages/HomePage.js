@@ -21,12 +21,13 @@ function HomePage(props) {
   const initials=userDetails.filter(user=> user.id==data).map(user=> user.initials);
   const email=userDetails.filter(user=> user.id==data).map(user=> user.email);
   const role=userDetails.filter(user=> user.id==data).map(user=> user.role);
-  const empId=userDetails.filter(user=> user.id==data).map(user=> user.id);
+  const emp=userDetails.filter(user=> user.id==data).map(user=> user.name);
+  
   var listClaims={};
 
   if(role!="Line Manager"){
     listClaims = myClaims.filter(claim=>claim.status=='PENDING').map(claim =>
-      <ClaimBtn click="/ProcessClaim" state={claim.id} empId={data}
+      <ClaimBtn click="/expenseClaimInfo" state={claim.id} empId={data}
                 one={claim.type} 
                 two={claim.id} 
                 three={claim.type} 
@@ -34,7 +35,7 @@ function HomePage(props) {
                 five={claim.submission}/>);
   }
   else{ 
-    listClaims = claims.filter(claim=>claim.status=='PENDING').map(claim =>
+    listClaims = claims.filter(claim=>claim.status=='PENDING' && claim.lm==name).map(claim =>
       <ClaimBtn click="/ProcessClaim" state={claim.id} empId={data}
                 one={claim.employee} 
                 two={claim.id} 
@@ -52,7 +53,7 @@ function HomePage(props) {
   }
 
   const actions=userDetails.filter(user=> user.role=="Line Manager").map(user=> 
-        <Link to="/myEmployees" state={{id:empId}}> <button > My Employees </button> </Link>
+        <Link to="/myEmployees" state={{id:user.id}}> <button > My Employees </button> </Link>
     )
     
 
@@ -82,7 +83,7 @@ function HomePage(props) {
           </div>
           <nav className="actions">
             <Link to="/MakeClaim"> <button >Claim Expense</button> </Link>
-            <Link to="/claims" state={{id:empId}}> <button > Personal Claims </button> </Link>
+            <Link to="/claims" state={{user: data, emp: emp}}> <button > Personal Claims </button> </Link>
             {actions}
           </nav>
       </div>

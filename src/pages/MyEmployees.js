@@ -15,13 +15,14 @@ function MyEmp(props){
     const  manager= state.lm;
 
     const name=userDetails.map(user=> user.name);
+    const usId=userDetails.map(user=> user.id);
     const initials=userDetails.map(user=> user.initials);
     const email=userDetails.map(user=> user.email);
     
     const listEmps = employees.filter(employee => employee.lm==manager).map(employee =>
         <tr>
-            <td style={{width: '70em'}}><ClaimBtn click="/ProcessClaim" one={employee.name} two={employee.id} three={employee.role} four={employee.score}/> </td>
-            <td style={{width: '10em'}}><Link to="/claims" state={{id: employee.id}}><button  style={{width:'8em'}}className='button'> VIEW CLAIMS</button></Link> </td> 
+            <td style={{width: '70em'}}><ClaimBtn click="" one={employee.name} two={employee.id} three={employee.role} four={employee.score}/> </td>
+            <td style={{width: '10em'}}><Link to="/claims" state={{user: usId, emp: employee.name}}><button  style={{width:'8em'}}className='button'> VIEW CLAIMS</button></Link> </td> 
         </tr>);
 
     const navigate = useNavigate();

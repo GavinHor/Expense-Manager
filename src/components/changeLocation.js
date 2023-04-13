@@ -14,7 +14,6 @@ export default function ChangeLocation(){
     const id=userDetails.map(user=> user.id);
     const initials=userDetails.map(user=> user.initials);
     const email=userDetails.map(user=> user.email);
-    const oldPw=userDetails.map(user=> user.password);
 
     const [sidebarOpen, setSideBarOpen] = useState(false);
     const handleViewSidebar = () => {
@@ -27,8 +26,11 @@ export default function ChangeLocation(){
 
     const handleClick = event => {
         event.preventDefault(); 
+        const ind = userDetails.findIndex((user => user.id == id));
+        userDetails[ind].location=newLoc;
+        userDetails[ind].currency=newCurr;
         alert('Information updated successfully.');
-        navigate('/home');
+        navigate('/home', { state: { id: id } });
         }
       
 
@@ -45,29 +47,33 @@ export default function ChangeLocation(){
                     <tr>
                         <td><label>Available Locations:</label></td>
                         <td>
-                            <select className='description' defaultValue="United Kingdom" 
+                            <form onChange={event => setLoc(event.target.value)} value={newLoc}>
+                                <select className='description' defaultValue="United Kingdom" 
                                     style={{width:'2em', fontSize:'3em'}}>
-                                        <option>United Kingdom</option>
-                                        <option>US</option>
-                                        <option>Germany</option>
-                                        <option>Australia</option>
-                                        <option>Hong Kong</option>
-                                        <option>China</option>
-                                        <option>Singapore</option>
-                                        <option>North America</option>
-                            </select>
+                                        <option value="United Kingdom">United Kingdom</option>
+                                        <option value="US">US</option>
+                                        <option value="Germany">Germany</option>
+                                        <option value="Australia">Australia</option>
+                                        <option value="Hong Kong">Hong Kong</option>
+                                        <option value="Chins">China</option>
+                                        <option value="Singapore">Singapore</option>
+                                        <option value="North America">North America</option>
+                                    </select>
+                            </form>
                         </td>
                     </tr>
                     <tr>
                     <td><label>Available Currencies:</label></td>
                         <td>
+                        <form onChange={event => setCurr(event.target.value)} value={newCurr}>
                             <select className='description' defaultValue="£ - GBP" 
                                     style={{width:'1em', fontSize:'3em'}}>
-                                        <option>£ - GBP</option>
-                                        <option>$ - USD</option>
-                                        <option>€ - EUR</option>
-                                        <option>Other</option>
-                            </select>
+                                        <option value="£ - GBP">£ - GBP</option>
+                                        <option value="$ - USD">$ - USD</option>
+                                        <option value="€ - EUR">€ - EUR</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                            </form>
                         </td>
                     </tr>
                     

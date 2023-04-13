@@ -13,16 +13,19 @@ import { userDetails } from '../data/userDetails';
 
 function Claims(){
     const {state}=useLocation();
-    const id=state.empId;
+    const id=state.user;
+    const emp=state.emp;
 
     const name=userDetails.filter(user=> user.id==id).map(user=> user.name);
     const initials=userDetails.filter(user=> user.id==id).map(user=> user.initials);
     const email=userDetails.filter(user=> user.id==id).map(user=> user.email);
-    const clLis=claims.filter(claim=> claim.empId==id);
+    const clLis=claims.filter(claim=> claim.employee==emp);
+
 
     const [sidebarOpen, setSideBarOpen] = useState(false);
     const handleViewSidebar = () => {
     setSideBarOpen(!sidebarOpen);};
+         
     return (
         <div className="Claims">
             <span>
@@ -30,7 +33,7 @@ function Claims(){
             </span>
             <Nav onClick={handleViewSidebar} initials={initials} name={name} email={email}/>
             <div className='bottom'> 
-                <h5>{name}'s Claims:</h5>
+                <h5>{emp}'s Claims:</h5>
                 <table className='table'>
                     <tr>
                     <td>CLAIM TYPE</td>
@@ -42,8 +45,9 @@ function Claims(){
                 </table>
                 <div className="list">
                     <table>
-                    {clLis.map(claim => (
-                        <ClaimBtn click='/ProcessClaim' state={claim.id} empId={name}
+                    {
+                    clLis.map(claim => (
+                        <ClaimBtn click={'/ProcessClaim'} state={claim.id} empId={emp}
                             one={claim.type}
                             two={claim.id}
                             three={claim.amount}

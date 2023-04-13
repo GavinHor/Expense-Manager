@@ -3,7 +3,6 @@ import { useState} from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
 
 import '../pagesStyles/expenseStyles.css';
-import claimPf from "../images/IMG_2397.jpg"
 
 import SideBar from '../components/SideBar';
 import Nav from '../components/Nav';
@@ -11,6 +10,9 @@ import BackBtn from '../components/BackBtn';
 
 import { userDetails } from '../data/userDetails';
 import { claims } from '../data/claims';
+
+import { imageArray } from '../images/imageArray';
+
 
 export default function ExpensesClaims(){
     const { state } = useLocation();
@@ -20,10 +22,13 @@ export default function ExpensesClaims(){
     const name=userDetails.filter(user=> user.id==data).map(user=> user.name);
     const initials=userDetails.filter(user=> user.id==data).map(user=> user.initials);
     const email=userDetails.filter(user=> user.id==data).map(user=> user.email);
+    var pf=claims.filter(claim=> claim.id==claimID).map(claim=> claim.proof)
 
     const [sidebarOpen, setSideBarOpen] = useState(false);
     const handleViewSidebar = () => {
       setSideBarOpen(!sidebarOpen);}
+
+      
     
     return(
         <div className="PurchaseExpense">
@@ -69,11 +74,11 @@ export default function ExpensesClaims(){
                   </tr>
                   <tr>
                     <td>Motive:</td>
-                    <td className="description">{claims.filter(claim=> claim.id==claimID).map(claim=> claim.id)}</td>
+                    <td className="description">{claims.filter(claim=> claim.id==claimID).map(claim=> claim.motive)}</td>
                   </tr>
                   <tr>
                     <td>Extra Details:</td>
-                    <td className="description">N/A</td>
+                    <td className="description">{claims.filter(claim=> claim.id==claimID).map(claim=> claim.extra)}</td>
                   </tr>
                 </table>
                 <BackBtn/>
@@ -81,7 +86,7 @@ export default function ExpensesClaims(){
               <div className='right'>
                 <h1>Expense Proof:</h1>
                 <div className='exProof'>
-                  <img src={claimPf}/>
+                  <img src={claims.filter(claim=> claim.id==claimID).map(claim=> claim.proof)}/>
                   <table>
                     <tr className='vat'>
                       <td>VAT:</td>

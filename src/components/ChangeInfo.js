@@ -36,10 +36,10 @@ export default function ChangeInfo(){
             }
             else{
                 // update password to new one
-                <userDetails password={newPw}/>
-                // userDetails.password=newPw;
+                const ind = userDetails.findIndex((user => user.id == id));
+                userDetails[ind].password=newPw;
                 alert('Password updated successfully.');
-                // navigate('/home');
+                navigate('/home', { state: { id: id } });
             }
         }
       };

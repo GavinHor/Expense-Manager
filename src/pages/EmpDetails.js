@@ -7,15 +7,17 @@ import '../pagesStyles/MyDetails.css';
 
 import SideBar from '../components/SideBar';
 import Nav from '../components/Nav';
-import ClaimBtn from '../components/ClaimBtn';
-
+import BackBtn from '../components/BackBtn';
 import { userDetails, myEmps , myClaims} from '../data/userDetails';
+import { employees } from '../data/employees';
+import { claims } from '../data/claims';
 
 
-function PersonalInfo (){
+function EmpDetails (){
     const { state } = useLocation();
-    // state.id;
-    const  userId='1';
+    const  userId=state.id;
+    const  empId=state.empId;
+    const employee=employees
     const name=userDetails.filter(user=> user.id==userId).map(user=> user.name);
     const initials=userDetails.filter(user=> user.id==userId).map(user=> user.initials);
     const email=userDetails.filter(user=> user.id==userId).map(user=> user.email);
@@ -26,57 +28,42 @@ function PersonalInfo (){
         setSideBarOpen(!sidebarOpen);
     }
 
-    const listInfo = userDetails.map(user =>
+    const listInfo = employees.filter(employee=> employee.id==empId).map(employee =>
         <table>
             <tr>
                 <td>Name:</td>
-                <td className="description">{name}</td>
+                <td className="description">{employee.name}</td>
             </tr>
             <tr>
                 <td>Role:</td>
-                <td className="description">{userDetails.filter(user=> user.id==userId).map(user=> user.role)}</td>
+                <td className="description">{employee.role}</td>
             </tr>
             <tr>
                 <td>Email:</td>
-                <td className="description">{email}</td>
+                <td className="description">{employee.email}</td>
             </tr>
             <tr>
                 <td>Reliability score:</td>
-                <td className="description">{userDetails.filter(user=> user.id==userId).map(user=> user.score)}</td>
-            </tr>
-            <tr>
-                <td>Currency:</td>
-                <td className="description">{userDetails.filter(user=> user.id==userId).map(user=> user.currency)}</td>
+                <td className="description">{employee.score}</td>
             </tr>
             <tr>
                 <td>Budget:</td>
-                <td className="description"> {userDetails.filter(user=> user.id==userId).map(user=> user.spent)}</td>
+                <td className="description"> {employee.spent}</td>
             </tr>
             <tr>
                 <td>Total Allowace:</td>
-                <td className="description">{userDetails.filter(user=> user.id==userId).map(user=> user.allowance)}</td>
+                <td className="description">{employee.allowance}</td>
             </tr>
         </table>);
 
-        var listClaims={};
+            const listClaims = claims.filter(claim=>claim.empId==empId).map(claim =>
+                <tr>
+                    <td>{claim.type}</td>
+                    <td>{claim.amount}</td>
+                    <td>{claim.status}</td>
+                    <td><Link to="/expenseClaimInfo" state={{claimID: claim.id ,id:userId}}> <input className="button" type="button" value="INFO" />  </Link></td>
+                </tr>);
 
-        if(role!="Line Manager"){
-        listClaims = myClaims.map(claim =>
-            <tr>
-                <td>{claim.type}</td>
-                <td>{claim.amount}</td>
-                <td>{claim.status}</td>
-                <td><Link to="/expenseClaimInfo" state={{claimID: claim.id ,id:userId}}> <input className="button" type="button" value="INFO" />  </Link></td>
-            </tr>);
-        }
-        else{ 
-        listClaims = myEmps.map(emp =>
-            <tr>
-                <td>{emp.name}</td>
-                <td><Link to="/empDetails" state={{id: userId,empId: emp.id}}> <input className="button" type="button" value="INFO" />  </Link></td>
-            </tr>
-            );
-}
     
     const consChange=userDetails.filter(user=> user.role=="Consultant").map(user=> 
         <Link to={{pathname:"/ChangeInfo"}}><button> LOCATION / CURRENCY </button></Link>
@@ -93,10 +80,11 @@ function PersonalInfo (){
                     <div className='left'>
                         <h4>Personal details:</h4>
                         {listInfo}
+                        <div style={{backgroundColor:'white', borderRadius:'60px', marginLeft:'2em', width:'2.5em', padding:'1em'}}><BackBtn/></div>
                     </div >
                     <div className='right' style={{marginBottom: '1em'}}>
                         <h4>Other info:</h4>
-                        <table>
+                        <table style={{width:'60vw'}}>
                             {listClaims}
                         </table>
                     </div>
@@ -109,4 +97,4 @@ function PersonalInfo (){
         )
     }
 
-export default PersonalInfo;
+export default EmpDetails;

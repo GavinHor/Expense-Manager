@@ -5,12 +5,12 @@ import Spline from '@splinetool/react-spline';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
+import { userDetails } from '../data/userDetails';
 
 function Login(props){
-    const id="1";
-    // User Data 
+    const id="1"
     const userEmail="a.belfiore@FDM.uk";
-    const userPw="ciao";
+    const userPw=userDetails.filter(user=>user.id==id).map(user=>user.password);
 
     const [email, setEmail] = useState('');
 

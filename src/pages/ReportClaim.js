@@ -26,24 +26,24 @@ export default function ReportClaim (){
     const listClaims = claims.filter(claim => claim.id==claimID).map(claim =>
         <table>
             <tr>
-                <td><span>Type:</span></td>
-                <td className="description" > {claim.type}</td>
+                <td className="desc"><span>Type:</span></td>
+                <td> {claim.type}</td>
             </tr>
             <tr>
-                <td><span>Amount:</span></td>
-                <td className="description" > {claim.amount}</td>
+            <td className="desc"><span>Amount:</span></td>
+                <td> {claim.amount}</td>
             </tr>
             <tr>
-                <td><span>Expense date:</span></td>
-                    <td className="description" > {claim.expDate}</td>
+                <td><span className="desc">Expense date:</span></td>
+                    <td> {claim.expDate}</td>
             </tr>
             <tr>
-                <td><span>Employee:</span></td>
-                    <td className="description" > {claim.employee}</td>
+                <td><span className="desc">Employee:</span></td>
+                    <td> {claim.employee}</td>
             </tr>
             <tr>
-                <td><span>Transportation:</span></td>
-                    <td className="description" > {claim.id}</td>
+                <td><span className="desc">Transportation:</span></td>
+                    <td> {claim.id}</td>
             </tr>
         </table>);
 
@@ -56,7 +56,9 @@ export default function ReportClaim (){
     const handleClick = event => {
         event.preventDefault(); 
         alert('Claim successfully reported.')
-        navigate('/home')
+        const ind = claims.findIndex((claim => claim.id == claimID));
+        claims[ind].status="REPORTED";
+        navigate('/home', { state: { id: data } });
         };
       
 
@@ -79,20 +81,20 @@ export default function ReportClaim (){
                     <div className="empDet">
                     <table>
                         <tr>
-                            <td><span>Name:</span></td>
-                            <td  className='desc'>{employees.filter(employee => employee.name==claimEmp).map(employee =>employee.name)}</td>
+                            <td className='desc'><span>Name:</span></td>
+                            <td >{employees.filter(employee => employee.name==claimEmp).map(employee =>employee.name)}</td>
                         </tr>
                         <tr>
-                            <td><span>Role:</span></td>
-                            <td className='desc'>{employees.filter(employee => employee.name==claimEmp).map(employee =>employee.role)}</td>
+                            <td className='desc'><span>Role:</span></td>
+                            <td>{employees.filter(employee => employee.name==claimEmp).map(employee =>employee.role)}</td>
                         </tr>
                         <tr>
-                            <td><span>Email:</span></td>
-                            <td className='desc'>{employees.filter(employee => employee.name==claimEmp).map(employee =>employee.email)}</td>
+                            <td className='desc'><span>Email:</span></td>
+                            <td>{employees.filter(employee => employee.name==claimEmp).map(employee =>employee.email)}</td>
                         </tr>
                         <tr>
-                            <td><span>Reliability Score:</span></td>
-                            <td className='desc'>{employees.filter(employee => employee.name==claimEmp).map(employee =>employee.score)}</td>
+                            <td className='desc'><span>Reliability Score:</span></td>
+                            <td>{employees.filter(employee => employee.name==claimEmp).map(employee =>employee.score)}</td>
                         </tr>
                     </table>
                     </div>
